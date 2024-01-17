@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/simpleecom/frontend/static/css/main.131de40c.css",
+    "main.js": "/simpleecom/frontend/static/js/main.2462c7d2.js",
+    "static/js/787.543bba2c.chunk.js": "/simpleecom/frontend/static/js/787.543bba2c.chunk.js",
+    "index.html": "/simpleecom/frontend/index.html",
+    "main.131de40c.css.map": "/simpleecom/frontend/static/css/main.131de40c.css.map",
+    "main.2462c7d2.js.map": "/simpleecom/frontend/static/js/main.2462c7d2.js.map",
+    "787.543bba2c.chunk.js.map": "/simpleecom/frontend/static/js/787.543bba2c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.131de40c.css",
+    "static/js/main.2462c7d2.js"
+  ]
+}
