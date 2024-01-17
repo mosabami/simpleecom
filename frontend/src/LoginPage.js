@@ -1,0 +1,45 @@
+// LoginPage.js
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './LoginPage.css'; // Import the CSS
+
+const LoginPage = ({ onLogin, loggedIn }) => {
+  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate('/');
+    }
+  }, [loggedIn, navigate]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onLogin(email);
+  };
+
+  const handleRegister = () => {
+    navigate('/register');
+  };
+
+  return (
+    <div className="login-page">
+       <h1>Login</h1> {/* Add the H1 element */}
+      <img src="https://images.unsplash.com/photo-1538587888044-79f13ddd7e49?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Login" className="login-image" />
+      <div className="login-form">
+        <form onSubmit={handleSubmit}>
+          <label>
+            Email:
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+          </label>
+          <div className="button-group">
+            <button type="submit">Login</button>
+            <button type="button" onClick={handleRegister}>Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage;

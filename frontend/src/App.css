@@ -1,0 +1,177 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* App.css or another CSS file */
+.product-image {
+  width: 100%;
+  height: auto;
+}
+
+/* App.css */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #333;
+  color: #fff;
+}
+
+.navbar-button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+
+}
+
+.navbar-button:hover {
+  color: #ddd;
+}
+
+/* App.css */
+.product-list {
+  margin-top: 2rem;
+}
+
+/* App.css */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #333;
+  color: white;
+}
+
+tfoot td {
+  font-weight: bold;
+}
+
+
+/* App.css */
+
+button {
+  background-color: #008CBA; /* Blue */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0px 0px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+button:hover {
+  background-color: #007B9A;
+}
+
+/* App.css */
+
+.product-details {
+  font-family: Arial, sans-serif;
+  color: #333;
+  line-height: 1.6;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+.product-details .product-image {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.product-details .product-info {
+  flex: 2;
+  text-align: left;
+}
+
+.product-details h2 {
+  margin-bottom: 4px;
+}
+
+.product-details p {
+  margin-bottom: 2px;
+  margin-top: 2px;
+}
+
+.product-details button {
+  background-color: #008CBA; /* Blue */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+.product-details button:hover {
+  background-color: #007B9A;
+}
+
+.product-details img {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+}
+
+.page-container {
+  margin-left: 100px;
+  margin-right: 100px;
+}
