@@ -1,10 +1,9 @@
-
-// ProductList.js
 import React from 'react';
 import Product from './Product';
+import './ProductList.css';
 
 const ProductList = ({ products, handleAddToCart }) => (
-  <div className="product-list" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+  <div className="product-list">
     {products.map(product => (
       <Product key={product.id} product={product} handleAddToCart={handleAddToCart}  />
     ))}

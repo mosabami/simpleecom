@@ -1,6 +1,7 @@
 // ProductDetails.js
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import './ProductDetails.css';
 
 const ProductDetails = ({ products, onAddToCart, order }) => {
   const { id } = useParams();
@@ -18,8 +19,8 @@ const ProductDetails = ({ products, onAddToCart, order }) => {
       <div className="product-info">
         <h2>{product.name}</h2>
         <p>{product.description}</p>
-        <p>${product.price}</p>
-        <p>Number of orders: {order[product.id] || 0}</p>
+        <p><strong>Price:</strong>${product.price}</p>
+        <p><strong>Cart quantity:</strong> {order[product.id] || 0}</p>
         <button onClick={() => onAddToCart(product.id)}>Add to Cart</button>
       </div>
     </div>
