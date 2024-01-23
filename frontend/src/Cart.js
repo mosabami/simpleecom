@@ -5,7 +5,7 @@ import './Cart.css'; // Import the CSS
 const Cart = ({ order, products, clearOrder }) => {
     const total = Object.keys(order).reduce((sum, productId) => {
         const product = products.find(product => product.id === productId);
-        return product ? sum + product.price * order[productId] : sum;
+        return product ? sum + product.Price * order[productId] : sum;
     }, 0);
 
     return (
@@ -25,10 +25,10 @@ const Cart = ({ order, products, clearOrder }) => {
                         const product = products.find(product => product.id === productId);
                         return product ? (
                             <tr key={productId}>
-                                <td>{product.name}</td>
-                                <td>${product.price}</td>
+                                <td>{product.Name}</td>
+                                <td>${product.Price}</td>
                                 <td>{order[productId]}</td>
-                                <td>${product.price * order[productId]}</td>
+                                <td>${product.Price * order[productId]}</td>
                             </tr>
                         ) : null;
                     })}

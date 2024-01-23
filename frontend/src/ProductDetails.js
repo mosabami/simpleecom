@@ -14,12 +14,12 @@ const ProductDetails = ({ products, onAddToCart, order }) => {
   return (
     <div className="product-details">
       <div className="product-image">
-        <img src={product.image} alt={product.name} />
+        <img src={`https://simpleeconsa.blob.core.windows.net/simpleeshop/${product.id}.webp`} alt={product.Name} />
       </div>
       <div className="product-info">
-        <h2>{product.name}</h2>
-        <p>{product.description}</p>
-        <p><strong>Price:</strong>${product.price}</p>
+        <h2>{product.Name}</h2>
+        <p>{product.Description}</p>
+        <p><strong>Price:</strong>${product.Price}</p>
         <p><strong>Cart quantity:</strong> {order[product.id] || 0}</p>
         <button onClick={() => onAddToCart(product.id)}>Add to Cart</button>
       </div>

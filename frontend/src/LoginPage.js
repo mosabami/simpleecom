@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.css'; // Import the CSS
 
-const LoginPage = ({ onLogin, loggedIn }) => {
+const LoginPage = ({ onLogin, loggedIn, wrongEmail }) => {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
@@ -37,6 +37,9 @@ const LoginPage = ({ onLogin, loggedIn }) => {
             <button type="button" onClick={handleRegister}>Register</button>
           </div>
         </form>
+        <div>
+        {wrongEmail && <p style={{ color: 'red' }}>Please enter a registered email address or click the Register button</p>}
+        </div>
       </div>
     </div>
   );

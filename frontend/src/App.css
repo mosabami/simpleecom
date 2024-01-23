@@ -132,3 +132,6 @@ button:hover {
   margin-right: 100px;
 }
 
+.error-message {
+  color: red;
+}
