@@ -8,6 +8,8 @@ with open('catalog.json', 'r') as file:
 for item in catalog_data:
     if 'Id' in item:
         item['id'] = str(item.pop('Id'))
+        item.pop('Embedding')
+        item['Inventory'] = 100
 
 # Write the updated list back to the file
 with open('catalog.json', 'w') as file:
