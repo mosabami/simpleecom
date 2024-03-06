@@ -7,7 +7,7 @@ with open('catalog.json', 'r') as file:
 # Modify 'Id' to 'id' for all dictionaries in the list
 for item in catalog_data:
     if 'Id' in item:
-        item['id'] = str(item.pop('Id'))
+        item['productId'] = item.pop('Id')
         item.pop('Embedding')
         item['Inventory'] = 100
 

@@ -23,7 +23,7 @@
           "Price": 100,
           "Inventory": 20,
           "Brand": "Daybird",
-          "id": "1"
+          "productId": 1
         },
         {
           "Name": "Wanderer Black Hiking Boots",
@@ -32,7 +32,7 @@
           "Price": 70,
           "Inventory": 20,
           "Brand": "Daybird",
-          "id": "2"
+          "productId": 2
         }   
       ]
   }

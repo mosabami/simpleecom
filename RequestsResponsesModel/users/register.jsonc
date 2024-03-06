@@ -5,7 +5,7 @@
     "method": "POST",
     "headers": {
     },
-    //this represent a query string for the POST request can all parameters are mandatory
+    //used to add a new user to the users collection
     "body": {
       "email": "john@outlook.com"
     }
