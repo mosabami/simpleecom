@@ -1,5 +1,6 @@
 {
-  // this request deletes the cart for that user from the database and return the cart data
+  // this request deletes the cart for that user from the database. it only does this
+  // when the front end has successfully requested to have the cart content added to the orders collection
   "request": {
     "endpoint": "https://api.example.com/cart/placeorder",
     "method": "GET",
@@ -12,13 +13,8 @@
   },
   "response": {
     "success": true,
-    "message": "successfully completed order",
+    "message": "successfully completed order and deleted cart for user",
     "data": {
-      "products": [
-        {"productId": 1, "productName": "Summit Pro Harness", "productPrice": 100, "productQuantity":3},
-        {"productId": 2, "productName": "Alpine Fusion Goggles", "productPrice": 200, "productQuantity":2},
-        {"productId": 3, "productName": "Wanderer Black Hiking Boots", "productPrice": 300, "productQuantity":5}
-      ]
     }
   }
 }

@@ -9,7 +9,7 @@
     // this endpoint takes productid from params and userid from header and returns the quantity of that product in the cart
     // front end checks its local state first to see if the product's quantity is already there before hitting this endpoint
     "params": {
-      "productId": "1"
+      "productId": 1
     }
   },
   "response": {
