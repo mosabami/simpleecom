@@ -1,0 +1,14 @@
+[
+    {
+        "userId":1,
+        "email":"john@outlook.com"
+    },
+    {
+        "userId":2,
+        "email":"jane@outlook.com"
+    },
+    {
+        "userId":3,
+        "email":"jacl@outlook.com"
+    }
+]

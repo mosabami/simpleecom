@@ -1,0 +1,21 @@
+[
+    {
+        "userId": 1,
+        "products":
+            [
+                {"productId": 1, "productName": "Summit Pro Harness", "productPrice": 100, "productQuantity":3},
+                {"productId": 2, "productName": "Alpine Fusion Goggles", "productPrice": 200, "productQuantity":2},
+                {"productId": 3, "productName": "Wanderer Black Hiking Boots", "productPrice": 300, "productQuantity":5}
+            ],
+        "_ttl":60
+    },
+    {
+        "userId": 2,
+        "products":
+            [
+                {"productId": 3, "productName": "Wanderer Black Hiking Boots", "productPrice": 100, "productQuantity":3},
+                {"productId": 2, "productName": "Alpine Fusion Goggles", "productPrice": 200, "productQuantity":3}
+            ],
+        "_ttl":60
+    }
+]

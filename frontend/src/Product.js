@@ -8,7 +8,7 @@ const Product = ({ product, handleAddToCart }) => {
 
   return (
     <div>
-      <img src={`https://simpleeconsa.blob.core.windows.net/simpleeshop/${product.id}.webp`} alt={product.Name} style={{ width: '100%', height: 'auto' }} />
+      <img src={`https://simpleecom.blob.core.windows.net/awesomeeshop/${product.id}.webp`} alt={product.Name} style={{ width: '100%', height: 'auto' }} />
       <h2><Link to={`/product/${product.id}`}>{product.Name}</Link></h2>
       <p>{truncatedDescription}...</p>
       <p>${product.Price}</p>
