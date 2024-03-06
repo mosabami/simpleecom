@@ -1,0 +1,30 @@
+{
+  "request": {
+    "endpoint": "https://api.example.com/products/productdetails",
+    "method": "GET",
+    "headers": {
+      "Authorization": "john@gmail.com",
+      "userId": 1
+    },
+    // this request takes the product id from the params and returns the product details
+    "params": {
+      "id": "1"
+    }
+  },
+  "response": {
+    "success": true,
+    "message": "successful collected product details",
+    "data": 
+        {
+          "Name": "Wanderer Black Hiking Boots",
+          "photoURL": "https://www.linktoawesomepicturestorage.com/1.webp",
+          "Description": "This is a description of the product",
+          "Price": 100,
+          "Inventory": 20,
+          "Brand": "Daybird",
+          "id": "1"
+        }
+  }
+}
+
+

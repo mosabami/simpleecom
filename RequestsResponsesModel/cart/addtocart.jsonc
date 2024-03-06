@@ -1,0 +1,25 @@
+{
+  "request": {
+    "endpoint": "https://api.example.com/cart/addtocart",
+    "method": "GET",
+    "headers": {
+      "Authorization": "john@gmail.com",
+      "userId": 1
+    },
+    // this cart takes productid from params and userid from header and adds 1 quantity to the cart collection for that product and user
+    // on success, front end also increments the product's quantity in its local state
+    "params": {
+      "productId": "1"
+    }
+  },
+  "response": {
+    "success": true,
+    "message": "successful added product to cart",
+    "data": 
+        {
+          "productQuantity":5
+        }
+  }
+}
+
+

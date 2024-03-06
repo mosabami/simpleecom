@@ -1,7 +1,7 @@
 [
     {
         "Name": "Wanderer Black Hiking Boots",
-        "photoURL": "https://www.linktoawesomepicturestorage.com",
+        "photoURL": "https://www.linktoawesomepicturestorage.com/1.webp",
         "Description": "This is a description of the product",
         "Price": 100,
         "Inventory": 20,
@@ -10,11 +10,11 @@
     },
     {
         "Name": "Wanderer Black Hiking Boots",
-        "photoURL": "https://www.linktoawesomepicturestorage.com",
+        "photoURL": "https://www.linktoawesomepicturestorage.com/2.webp",
         "Description": "This is a description of the product",
-        "Price": 100,
+        "Price": 70,
         "Inventory": 20,
         "Brand": "Daybird",
-        "id": "1"
+        "id": "2"
     }   
 ]
