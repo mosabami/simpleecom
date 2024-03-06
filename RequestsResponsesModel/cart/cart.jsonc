@@ -1,0 +1,29 @@
+{
+  "request": {
+    "endpoint": "https://api.example.com/cart/cart",
+    "method": "GET",
+    "headers": {
+      "Authorization": "john@gmail.com",
+      "userId": 1
+    },
+    "params": {
+    }
+  },
+  "response": {
+    // checks cart collection for the userId in header and returns empty data if no products in user's cart
+    "success": true,
+    "message": "successful collected cart details",
+    "data": 
+        {
+          "products":
+            [
+                {"productId": 1, "productName": "Summit Pro Harness", "productPrice": 100, "productQuantity":3},
+                {"productId": 2, "productName": "Alpine Fusion Goggles", "productPrice": 200, "productQuantity":2},
+                {"productId": 3, "productName": "Wanderer Black Hiking Boots", "productPrice": 300, "productQuantity":5}
+            ],
+          "_ttl":60
+        }
+  }
+}
+
+

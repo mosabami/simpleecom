@@ -1,0 +1,20 @@
+{
+  "request": {
+    "endpoint": "https://api.example.com/users/login",
+    "method": "GET",
+    "headers": {
+    },
+    //used to login a user if the user is registered in the user collection
+    "params": {
+      "email": "john@outlook.com"
+    }
+  },
+  "response": {
+    "success": true,
+    "message": "login successful",
+    "data": {
+      "userId": 1,
+      "email": "john@outlook.com"
+    }
+  }
+}

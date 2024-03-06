@@ -1,0 +1,27 @@
+{
+  //
+  "request": {
+    "endpoint": "https://api.example.com/orders/order",
+    "method": "POST",
+    "headers": {
+      "Authorization": "john@gmail.com",
+      "userId": 1
+    },
+    // this endpoint takes the body, calculates the productTotal, takes the uderid from the header generates an order id and inserts the 
+    // data into the orders collection
+    // on success, frontend sends a request to cart service to delete the content of that user's cart
+    "body": {
+      "products":[
+        {"productId": 1, "productName": "Summit Pro Harness", "productPrice": 100, "productQuantity":3},
+        {"productId": 2, "productName": "Alpine Fusion Goggles", "productPrice": 200, "productQuantity":2},
+        {"productId": 3, "productName": "Wanderer Black Hiking Boots", "productPrice": 300, "productQuantity":5}
+      ]
+    }
+  },
+  "response": {
+    "success": true,
+    "message": "order created successfully",
+    "data": {
+    }
+  }
+}

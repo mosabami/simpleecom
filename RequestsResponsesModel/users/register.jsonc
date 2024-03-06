@@ -1,0 +1,21 @@
+{
+  //when cuser tries to register
+  "request": {
+    "endpoint": "https://api.example.com/users/register",
+    "method": "POST",
+    "headers": {
+    },
+    //this represent a query string for the POST request can all parameters are mandatory
+    "body": {
+      "email": "john@outlook.com"
+    }
+  },
+  "response": {
+    "success": true,
+    "message": "user created successfully",
+    "data": {
+      "userId": 1,
+      "email": "john@outlook.com",
+    }
+  }
+}
