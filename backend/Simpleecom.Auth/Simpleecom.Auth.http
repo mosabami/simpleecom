@@ -1,0 +1,6 @@
+@Simpleecom.Auth_HostAddress = http://localhost:5005
+
+GET {{Simpleecom.Auth_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

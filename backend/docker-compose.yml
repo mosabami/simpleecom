@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  simpleecom.products.api:
+    image: ${DOCKER_REGISTRY-}simpleecomproductsapi
+    build:
+      context: .
+      dockerfile: Simpleecom.Products.API/Dockerfile
+
+  simpleecom.carts.api:
+    image: ${DOCKER_REGISTRY-}simpleecomcartsapi
+    build:
+      context: .
+      dockerfile: Simpleecom.Cart.API/Dockerfile
+
+
+  simpleecom.orders.api:
+    image: ${DOCKER_REGISTRY-}simpleecomordersapi
+    build:
+      context: .
+      dockerfile: Simpleecom.Orders.API/Simpleecom.Orders.API/Dockerfile
+
+
+  simpleecom.auth:
+    image: ${DOCKER_REGISTRY-}simpleecomauth
+    build:
+      context: .
+      dockerfile: Simpleecom.Auth/Dockerfile
+
