@@ -4,6 +4,7 @@ using Microsoft.Azure.CosmosRepository.ChangeFeed;
 using Simpleecom.Shared.Models;
 using Simpleecom.Shared.Options;
 using Simpleecom.Shared.Processors;
+using Simpleecom.Shared.Services;
 
 namespace Simpleecom.Orders.API
 {
@@ -19,6 +20,8 @@ namespace Simpleecom.Orders.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             var repositoryOptions = builder.Configuration.GetSection(nameof(Shared.Options.RepositoryOptions)).Get<Shared.Options.RepositoryOptions>();
             var containerOptionsValue = builder.Configuration.GetSection("RepositoryOptions:ContainerOptions").Get<ContainerOptions>();
+            builder.Services.AddSwaggerGen();
+            builder.Services.AddSingleton<ICosmosDbService, CosmosDbService>();
 
 
             builder.Services.AddCosmosRepository(options =>

@@ -24,7 +24,7 @@ namespace Simpleecom.Orders.API.Controllers
             return Ok(orders);
         }
 
-        [HttpGet("{id:string}")]
+        [HttpGet]
         public IActionResult GetOrdersById(string orderId)
         {
             var orders = _repository.GetAsync(x => x.OrderId != orderId);
@@ -38,7 +38,7 @@ namespace Simpleecom.Orders.API.Controllers
             return Ok("Order Created");
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public IActionResult DeleteOrder(string orderId)
         {
             _repository.DeleteAsync(orderId);
