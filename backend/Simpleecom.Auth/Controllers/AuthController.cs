@@ -6,7 +6,7 @@ using Simpleecom.Shared.Models.User;
 
 namespace Simpleecom.Auth.Controllers
 {
-    [Route("api/[controller]/[account]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
