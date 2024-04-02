@@ -22,7 +22,6 @@ namespace Simpleecom.Carts.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddSingleton<ICosmosDbService, CosmosDbService>();
 
             var repositoryOptions = builder.Configuration.GetSection(nameof(Shared.Options.RepositoryOptions)).Get<Shared.Options.RepositoryOptions>();
             var containerOptionsValue = builder.Configuration.GetSection("RepositoryOptions:ContainerOptions").Get<ContainerOptions>();
