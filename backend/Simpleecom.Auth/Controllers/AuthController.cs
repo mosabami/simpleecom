@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.CosmosRepository;
 using Simpleecom.Shared.Models;
 using Simpleecom.Shared.Models.User;
+using Simpleecom.Shared.Repositories;
 
 namespace Simpleecom.Auth.Controllers
 {
@@ -13,23 +13,23 @@ namespace Simpleecom.Auth.Controllers
 
         private readonly IRepository<User> _repository;
 
-        public AuthController(IRepositoryFactory factory)
+        public AuthController(IRepository<User> repository)
         {
-            _repository = factory.RepositoryOf<User>();
+            _repository = repository;
         }
 
         [HttpPost]
-        public IActionResult RegisterUser(User user)
+        public async Task<IActionResult> RegisterUserAsync(User user)
         {
-            var u = _repository.CreateAsync(user);
+            var u = await _repository.AddAsync(user);
             return Ok();
         }
 
         [HttpGet]
-        public IActionResult GetUser(string userId)
+        public async Task<IActionResult> GetUserAsync(string userId)
         {
-            var u = _repository.GetAsync(x => x.Id == userId);
-            return Ok(u);
+            var u = await _repository.GetItemsAsync(x => x.Id == userId);
+            return Ok(u.FirstOrDefault());
         }
 
     }

@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.CosmosRepository;
-using Microsoft.Azure.CosmosRepository.Extensions;
+﻿using Microsoft.AspNetCore.Mvc;
 using Simpleecom.Shared.Models;
+using Simpleecom.Shared.Repositories;
 
 namespace Simpleecom.Carts.API.Controllers
 {
@@ -13,22 +11,23 @@ namespace Simpleecom.Carts.API.Controllers
 
         private readonly IRepository<Cart> _repository;
 
-        public CartController(IRepositoryFactory factory)
+        public CartController(IRepository<Cart> repository)
         {
-            _repository = factory.RepositoryOf<Cart>();
+            _repository = repository;
         }
 
 
         [HttpGet]
-        public IActionResult GetCart(string cartId)
+        public async Task<IActionResult> GetCartAsync(string cartId)
         {
-            var carts = _repository.GetAsync(x => x.CartId != cartId);
-            return Ok("Cart");
+            var carts = await _repository.GetItemsAsync(x => x.CartId == cartId);
+            return Ok(carts.FirstOrDefault());
         }
+
         [HttpGet]
-        public IActionResult GetCartById(string cartId)
+        public IActionResult GetCartById(string id)
         {
-            var cart = _repository.GetAsync(x => x.CartId == cartId);
+            var cart = _repository.GetItemsAsync(x => x.Id == id);
             return Ok("Cart");
         }
         [HttpPost]
@@ -36,7 +35,7 @@ namespace Simpleecom.Carts.API.Controllers
         {
             if (cart != null)
             {
-                var c = _repository.CreateAsync(cart);
+                var c = _repository.AddAsync(cart);
             }
             return Ok("Cart");
         }
@@ -46,16 +45,15 @@ namespace Simpleecom.Carts.API.Controllers
         {
             if (cart != null)
             {
-                var u = _repository.UpdateAsync(cart);
+                var u = _repository.UpdateAsync(cart.Id,cart);
             }
             return Ok("Cart");
         }
 
         [HttpDelete]
-        public IActionResult DeleteCart(string cartId)
+        public IActionResult DeleteCart(string id)
         {
-            var cart = _repository.GetAsync(x => x.CartId == cartId).FirstOrDefaultAsync().Result;
-            _repository.DeleteAsync(cart);
+            _repository.DeleteAsync(id);
             return Ok("Cart");
         }
     }

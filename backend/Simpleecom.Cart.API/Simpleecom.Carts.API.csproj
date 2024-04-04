@@ -14,8 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.CosmosRepository.AspNetCore\Microsoft.Azure.CosmosRepository.AspNetCore.csproj" />
-    <ProjectReference Include="..\Microsoft.Azure.CosmosRepository\Microsoft.Azure.CosmosRepository.csproj" />
     <ProjectReference Include="..\Simpleecom.Shared\Simpleecom.Shared.csproj" />
   </ItemGroup>
 

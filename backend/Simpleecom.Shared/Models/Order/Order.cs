@@ -1,12 +1,4 @@
-﻿using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.CosmosRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Simpleecom.Shared.Models
+﻿namespace Simpleecom.Shared.Models
 {
     public class Order : Item
     {

@@ -1,5 +1,5 @@
-﻿using Microsoft.Azure.CosmosRepository;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+
 
 namespace Simpleecom.Shared.Models
 {
@@ -48,7 +48,6 @@ namespace Simpleecom.Shared.Models
         
         public string PartitionKey { get; set; }
 
-        protected override string GetPartitionKeyValue() => PartitionKey;
     }
 
 }

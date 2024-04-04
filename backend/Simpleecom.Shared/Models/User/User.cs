@@ -1,5 +1,4 @@
-﻿using Microsoft.Azure.CosmosRepository;
-
+﻿
 
 namespace Simpleecom.Shared.Models.User
 {

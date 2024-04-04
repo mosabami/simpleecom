@@ -1,9 +1,6 @@
 
-using Microsoft.Azure.CosmosRepository.AspNetCore.Extensions;
-using Microsoft.Azure.CosmosRepository.ChangeFeed;
 using Simpleecom.Shared.Models;
 using Simpleecom.Shared.Options;
-using Simpleecom.Shared.Processors;
 
 namespace Simpleecom.Auth
 {
@@ -24,21 +21,21 @@ namespace Simpleecom.Auth
             var containerOptionsValue = builder.Configuration.GetSection("RepositoryOptions:ContainerOptions").Get<ContainerOptions>();
 
 
-            builder.Services.AddCosmosRepository(options =>
-            {
-                options.CosmosConnectionString = repositoryOptions.ConnectionString;
-                options.DatabaseId = repositoryOptions.DatabaseId;
-                options.ContainerPerItemType = repositoryOptions.ContainerPerItemType;
-                options.IsAutoResourceCreationIfNotExistsEnabled = repositoryOptions.IsAutoResourceCreationIfNotExistsEnabled;
+            //builder.Services.AddCosmosRepository(options =>
+            //{
+            //    options.CosmosConnectionString = repositoryOptions.ConnectionString;
+            //    options.DatabaseId = repositoryOptions.DatabaseId;
+            //    options.ContainerPerItemType = repositoryOptions.ContainerPerItemType;
+            //    options.IsAutoResourceCreationIfNotExistsEnabled = repositoryOptions.IsAutoResourceCreationIfNotExistsEnabled;
 
-                options.ContainerBuilder.Configure<Product>(containerOptions =>
-                {
-                    containerOptions.WithContainer(containerOptionsValue.ContainerId);
-                    containerOptions.WithPartitionKey(containerOptionsValue.PartitionKeyPath);
-                    containerOptions.WithChangeFeedMonitoring();
-                });
+            //    options.ContainerBuilder.Configure<Product>(containerOptions =>
+            //    {
+            //        containerOptions.WithContainer(containerOptionsValue.ContainerId);
+            //        containerOptions.WithPartitionKey(containerOptionsValue.PartitionKeyPath);
+            //        containerOptions.WithChangeFeedMonitoring();
+            //    });
 
-            });
+            //});
 
             var app = builder.Build();
 
@@ -49,7 +46,7 @@ namespace Simpleecom.Auth
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseAuthorization();
 

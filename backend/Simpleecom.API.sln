@@ -13,10 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simpleecom.Products.API", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simpleecom.Shared", "Simpleecom.Shared\Simpleecom.Shared.csproj", "{321131CE-59C9-47D0-B554-F569B839C83B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.CosmosRepository", "Microsoft.Azure.CosmosRepository\Microsoft.Azure.CosmosRepository.csproj", "{3423B6D2-2A98-4BCB-AA9C-C4B7C3295B4B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.CosmosRepository.AspNetCore", "Microsoft.Azure.CosmosRepository.AspNetCore\Microsoft.Azure.CosmosRepository.AspNetCore.csproj", "{92868B53-A031-4134-BF5F-41D6815F1D49}"
-EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{653CD6EC-C0D2-4461-8FC0-3A1BDEB8D2E9}"
 EndProject
 Global
@@ -45,14 +41,6 @@ Global
 		{321131CE-59C9-47D0-B554-F569B839C83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{321131CE-59C9-47D0-B554-F569B839C83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{321131CE-59C9-47D0-B554-F569B839C83B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3423B6D2-2A98-4BCB-AA9C-C4B7C3295B4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3423B6D2-2A98-4BCB-AA9C-C4B7C3295B4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3423B6D2-2A98-4BCB-AA9C-C4B7C3295B4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3423B6D2-2A98-4BCB-AA9C-C4B7C3295B4B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92868B53-A031-4134-BF5F-41D6815F1D49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92868B53-A031-4134-BF5F-41D6815F1D49}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92868B53-A031-4134-BF5F-41D6815F1D49}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92868B53-A031-4134-BF5F-41D6815F1D49}.Release|Any CPU.Build.0 = Release|Any CPU
 		{653CD6EC-C0D2-4461-8FC0-3A1BDEB8D2E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{653CD6EC-C0D2-4461-8FC0-3A1BDEB8D2E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{653CD6EC-C0D2-4461-8FC0-3A1BDEB8D2E9}.Release|Any CPU.ActiveCfg = Release|Any CPU

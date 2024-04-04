@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.CosmosRepository;
 using Simpleecom.Shared.Models;
+using Simpleecom.Shared.Repositories;
+using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,29 +13,36 @@ namespace Simpleecom.Orders.API.Controllers
     {
         private readonly IRepository<Order> _repository;
 
-        public OrdersController(IRepositoryFactory factory)
+        public OrdersController(IRepository<Order> repository)
         {
-            _repository = factory.RepositoryOf<Order>();
+            _repository = repository;
         }
 
         [HttpGet]
         public IActionResult GetOrdersByUser(string userId)
         {
-            var orders = _repository.GetAsync(x => x.UserId != userId);
+            var orders = _repository.GetByIdAsync(userId);
             return Ok(orders);
         }
 
         [HttpGet]
-        public IActionResult GetOrdersById(string orderId)
+        public async Task<IActionResult> GetOrdersByIdAsync(string orderId)
         {
-            var orders = _repository.GetAsync(x => x.OrderId != orderId);
+            var orders = await _repository.GetByIdAsync(orderId);        
+                return Ok(orders);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetItemsAsync(string orderId)
+        {
+            var orders = await _repository.GetItemsAsync(x => x.OrderId != orderId);
             return Ok(orders);
         }
 
         [HttpPost]
         public IActionResult CreateOrderAsync([FromBody] Order value)
         {
-            _repository.CreateAsync(value);
+            _repository.AddAsync(value);
             return Ok("Order Created");
         }
 
