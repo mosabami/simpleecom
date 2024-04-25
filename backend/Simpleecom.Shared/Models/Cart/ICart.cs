@@ -1,5 +1,4 @@
-﻿
-namespace Simpleecom.Shared.Models
+﻿namespace Simpleecom.Shared.Models
 {
     public interface ICart
     {

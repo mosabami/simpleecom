@@ -1,12 +1,13 @@
-
 using Simpleecom.Shared.Models;
 using Simpleecom.Shared.Options;
+using Simpleecom.Shared.Processors;
+using Simpleecom.Shared.Repositories;
 
 namespace Simpleecom.Auth
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -14,30 +15,19 @@ namespace Simpleecom.Auth
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.Configure<RepositoryOptions>(builder.Configuration.GetSection("RepositoryOptions"));
+            builder.Services.AddSingleton<IProductChangeFeedProcessor, ProductChangeFeedProcessor>();
+
+            builder.Services.AddScoped(typeof(CosmosDBRepository<>));
+
             builder.Services.AddSwaggerGen();
 
-            var repositoryOptions = builder.Configuration.GetSection(nameof(Shared.Options.RepositoryOptions)).Get<Shared.Options.RepositoryOptions>();
-            var containerOptionsValue = builder.Configuration.GetSection("RepositoryOptions:ContainerOptions").Get<ContainerOptions>();
-
-
-            //builder.Services.AddCosmosRepository(options =>
-            //{
-            //    options.CosmosConnectionString = repositoryOptions.ConnectionString;
-            //    options.DatabaseId = repositoryOptions.DatabaseId;
-            //    options.ContainerPerItemType = repositoryOptions.ContainerPerItemType;
-            //    options.IsAutoResourceCreationIfNotExistsEnabled = repositoryOptions.IsAutoResourceCreationIfNotExistsEnabled;
-
-            //    options.ContainerBuilder.Configure<Product>(containerOptions =>
-            //    {
-            //        containerOptions.WithContainer(containerOptionsValue.ContainerId);
-            //        containerOptions.WithPartitionKey(containerOptionsValue.PartitionKeyPath);
-            //        containerOptions.WithChangeFeedMonitoring();
-            //    });
-
-            //});
-
             var app = builder.Build();
+
+            await app.Services.GetRequiredService<IProductChangeFeedProcessor>().InitializeAsync();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -46,10 +36,7 @@ namespace Simpleecom.Auth
                 app.UseSwaggerUI();
             }
 
-            //app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
 
             app.MapControllers();
 

@@ -2,26 +2,23 @@
 {
     public class Order : Item
     {
+       
 
-        public Order(double total, string status, string UserId,List<Product> products, bool isUpdate = false)
+        public Order(
+            double total,
+            string status,
+            string UserId,
+            List<Product> products,
+            string OrderId,
+            bool isUpdate = false
+        )
         {
             this.Total = total;
             this.Status = status;
             this.UserId = UserId;
             this.Products = products;
             this.IsUpdate = isUpdate;
-            PartitionKey = UserId.ToString();
-            
-        }
-
-        public Order(double total, string status, string UserId, List<Product> products, string partitionKey ,bool isUpdate = false)
-        {
-            this.Total = total;
-            this.Status = status;
-            this.UserId = UserId;
-            this.Products = products;
-            this.IsUpdate = isUpdate;
-            PartitionKey = partitionKey;
+            this.OrderId = OrderId;
         }
 
         public List<Product> Products { get; set; }
@@ -32,15 +29,12 @@
 
         public string Status { get; set; }
 
-        public string UserId { get; set;}
+        public string UserId { get; set; }
 
         public bool IsUpdate { get; set; }
 
-        public string PartitionKey { get; set; }
-
         public string OrderId { get; set; }
 
-        protected override string GetPartitionKeyValue() => PartitionKey;
+        protected override string GetPartitionKeyValue() => UserId;
     }
-
 }

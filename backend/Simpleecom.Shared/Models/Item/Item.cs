@@ -1,6 +1,4 @@
-﻿
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Simpleecom.Shared.Models
 {
@@ -15,6 +13,5 @@ namespace Simpleecom.Shared.Models
         public Item() => Type = GetType().Name;
 
         protected virtual string GetPartitionKeyValue() => Id;
-
     }
 }

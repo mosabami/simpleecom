@@ -1,31 +1,79 @@
-﻿//using Microsoft.Azure.CosmosRepository.ChangeFeed;
-//using Microsoft.Azure.CosmosRepository;
-//using Microsoft.Extensions.Logging;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using Simpleecom.Shared.Models;
+﻿using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.Extensions.Options;
+using Simpleecom.Shared.Models;
+using Simpleecom.Shared.Options;
 
-//namespace Simpleecom.Shared.Processors
-//{
-  
-//    public class ProductChangeFeedProcessor(ILogger<ProductChangeFeedProcessor> logger,
-//    IRepository<Product> productRepository) : IItemChangeFeedProcessor<Product>
-//    {
-//        public async ValueTask HandleAsync(Product product, CancellationToken cancellationToken)
-//        {
-//            logger.LogInformation("Change detected for Product with ID: {ProductId}", product.Id);
+namespace Simpleecom.Shared.Processors
+{
+    public interface IProductChangeFeedProcessor
+    {
+        Task InitializeAsync();
+    }
 
-//            //if (!rating.HasBeenUpdated)
-//            //{
-//            //    await bookByIdReferenceRepository
-//            //        .CreateAsync(new BookByIdReference(rating.Id, rating.Category),
-//            //        cancellationToken);
-//            //}
+    public class ProductChangeFeedProcessor : IProductChangeFeedProcessor
+    {
+        private readonly RepositoryOptions _options;
+        private static Random random = new Random();
 
-//            logger.LogInformation("Processed change for product with ID: {ProductId}", product.Id);
-//        }
-//    }
-//}
+        public ProductChangeFeedProcessor(IOptions<RepositoryOptions> options)
+        {
+            _options = options.Value;
+        }
+
+        public async Task InitializeAsync()
+        {
+            string databaseName = _options.DatabaseName;
+            string containerName = _options.ContainerName;
+
+            var cosmosClient = new CosmosClientBuilder(_options.ConnectionString)
+                .WithSerializerOptions(
+                    new CosmosSerializationOptions
+                    {
+                        PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                    }
+                )
+                .Build();
+
+            //return new CosmosClient(configuration["CosmosDbEndpoint"], new DefaultAzureCredential());
+
+            string leaseContainerName = _options.LeaseContainerName;
+            Database database = await cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName);
+            Container container = await database.CreateContainerIfNotExistsAsync(
+                containerName,
+                _options.PartitionKey
+            );
+            Container leaseContainer = await database.CreateContainerIfNotExistsAsync(
+                leaseContainerName,
+                "/id"
+            );
+
+            ChangeFeedProcessor changeFeedProcessor = container
+                .GetChangeFeedProcessorBuilder<Product>("changeFeedProcessor", HandleChangesAsync)
+                .WithInstanceName($"LeaseInstance-{random}")
+                .WithLeaseContainer(leaseContainer)
+                .Build();
+
+            await changeFeedProcessor.StartAsync();
+        }
+
+        private async Task HandleChangesAsync(
+            IReadOnlyCollection<Product> changes,
+            CancellationToken cancellationToken
+        )
+        {
+            foreach (var product in changes)
+            {
+                Console.WriteLine($"Changed item: {product}");
+            }
+        }
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(
+                Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray()
+            );
+        }
+    }
+}

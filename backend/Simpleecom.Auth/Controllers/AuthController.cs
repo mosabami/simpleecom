@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Simpleecom.Shared.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Simpleecom.Shared.Models.User;
 using Simpleecom.Shared.Repositories;
 
@@ -10,10 +8,9 @@ namespace Simpleecom.Auth.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly CosmosDBRepository<User> _repository;
 
-        private readonly IRepository<User> _repository;
-
-        public AuthController(IRepository<User> repository)
+        public AuthController(CosmosDBRepository<User> repository)
         {
             _repository = repository;
         }
@@ -31,6 +28,5 @@ namespace Simpleecom.Auth.Controllers
             var u = await _repository.GetItemsAsync(x => x.Id == userId);
             return Ok(u.FirstOrDefault());
         }
-
     }
 }

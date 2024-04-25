@@ -4,13 +4,9 @@ namespace Simpleecom.Products.API.Services
 {
     public class ProductService : IProduct
     {
-        public ProductService()
-        {
-        }
-        public ProductService(string name)
-        {
+        public ProductService() { }
 
-        }
+        public ProductService(string name) { }
 
         public Task<Product> CreateProductAsync(Product product)
         {

@@ -6,9 +6,17 @@ using System.Threading.Tasks;
 
 namespace Simpleecom.Shared.Constants
 {
-    public static class Status
+    public static class CartStatus
     {
         public const string New = "New";
         public const string Completed = "Completed";
+    }
+
+    public static class OrderStatus
+    {
+        public const string New = "New";
+        public const string Pending = "Pending";
+        public const string Completed = "Completed";
+        public const string Shipped = "Shipped";
     }
 }

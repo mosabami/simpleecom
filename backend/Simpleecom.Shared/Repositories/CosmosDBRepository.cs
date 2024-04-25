@@ -1,32 +1,53 @@
 ﻿using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.Extensions.Options;
 using Simpleecom.Shared.Models;
+using Simpleecom.Shared.Options;
 
 namespace Simpleecom.Shared.Repositories
 {
-
-    public class CosmosDBRepository<T> : IRepository<T> where T : Item
+    public class CosmosDBRepository<T> : IRepository<T>
+        where T : Item
     {
         private readonly Container _container;
+        private readonly RepositoryOptions _options;
 
-        public CosmosDBRepository(Container container)
+        public CosmosDBRepository(IOptions<RepositoryOptions> options)
         {
-            _container = container;
+            _options = options.Value;
+
+            var cosmosClient = new CosmosClientBuilder(_options.ConnectionString)
+                .WithSerializerOptions(
+                    new CosmosSerializationOptions
+                    {
+                        PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                    }
+                )
+                .Build();
+
+            _container = cosmosClient
+                .GetDatabase(_options.DatabaseName)
+                .CreateContainerIfNotExistsAsync(_options.ContainerName, _options.PartitionKey)
+                .Result;
         }
 
-        public async Task<T> GetByIdAsync(string id)
+        public async Task<T> GetByIdAsync(string id, string partitionKeyValue)
         {
             try
             {
-                ItemResponse<T> response = await _container.ReadItemAsync<T>(id, new PartitionKey(id));
+                ItemResponse<T> response = await _container.ReadItemAsync<T>(
+                    id,
+                    new PartitionKey(partitionKeyValue)
+                );
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                return null;
+               throw new Exception($"Item with id {id} not found");
             }
         }
 
-        public async Task<IEnumerable<T>> GetByQueryAsync( QueryDefinition queryDefinition)
+        public async Task<IEnumerable<T>> GetByQueryAsync(QueryDefinition queryDefinition)
         {
             var query = _container.GetItemQueryIterator<T>(queryDefinition);
             var results = new List<T>();
@@ -44,9 +65,13 @@ namespace Simpleecom.Shared.Repositories
             return response.Resource;
         }
 
-        public async Task UpdateAsync(string id,T item, string partitionKeyValue = null)
+        public async Task UpdateAsync(string id, T item, string partitionKeyValue)
         {
-            await _container.ReplaceItemAsync(item, item.Id, new PartitionKey(partitionKeyValue ?? id));
+            await _container.ReplaceItemAsync(
+                item,
+                item.Id,
+                new PartitionKey(partitionKeyValue)
+            );
         }
 
         public async Task DeleteAsync(string id)
@@ -58,15 +83,13 @@ namespace Simpleecom.Shared.Repositories
         {
             try
             {
-                var items = _container.GetItemLinqQueryable<T>(true).Where(predicate);               
+                var items = _container.GetItemLinqQueryable<T>(true).Where(predicate);
                 return items; // or throw an exception if not found
             }
             catch (Exception ex)
             {
-                throw ex;
+               throw new Exception($"Item not found " + ex.Message);
             }
         }
-
     }
-
 }

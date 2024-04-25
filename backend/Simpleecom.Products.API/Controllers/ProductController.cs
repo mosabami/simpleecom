@@ -8,45 +8,47 @@ namespace Simpleecom.Products.API.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IRepository<Product> _repository;
+        private readonly CosmosDBRepository<Product> _repository;
 
-        public ProductController(IRepository<Product> repository)
+        public ProductController(CosmosDBRepository<Product> repository)
         {
             _repository = repository;
         }
 
         [HttpGet]
-        public IActionResult GetProducts(string id)
+        public async Task<IActionResult> GetProductsAsync(string id)
         {
-            var products = _repository.GetByIdAsync(id);
+            var products = await _repository.GetByIdAsync(id, "Daybird");
             return Ok(products);
         }
+
         [HttpGet]
         public IActionResult GetProductById(string id)
         {
-            var product = _repository.GetByIdAsync(id);
+            var product = _repository.GetByIdAsync(id, "");
             return Ok("Product");
         }
+
         [HttpPost]
         public IActionResult CreateProduct([FromBody] Product product)
         {
             if (product != null)
             {
-              var p =   _repository.AddAsync(product);
+                var p = _repository.AddAsync(product);
             }
             return Ok("Product");
         }
 
         [HttpPut(Name = nameof(CreateProduct2))]
         public Task<Product> CreateProduct2([FromBody] Product product) =>
-      _repository.AddAsync(product);
+            _repository.AddAsync(product);
 
         [HttpPut]
         public async Task<IActionResult> UpdateProductAsync([FromBody] Product product)
         {
             if (product != null)
             {
-                await _repository.UpdateAsync(product.Id, product);
+                await _repository.UpdateAsync(product.Id, product, product.Brand);
             }
 
             return Ok("Product");
@@ -54,8 +56,14 @@ namespace Simpleecom.Products.API.Controllers
 
         [HttpPut(Name = nameof(UpdateProduct2))]
         public Task UpdateProduct2([FromBody] Product product) =>
-       _repository.UpdateAsync(product.Id, product);
+            _repository.UpdateAsync(product.Id, product, product.Brand);
 
+        [HttpGet]
+        public async Task<IActionResult> GetItemsAsync(int productId)
+        {
+            var orders = await _repository.GetItemsAsync(x => x.productId != productId);
+            return Ok(orders);
+        }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteProductAsync(string id)

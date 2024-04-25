@@ -8,14 +8,12 @@ namespace Simpleecom.Carts.API.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
+        private readonly CosmosDBRepository<Cart> _repository;
 
-        private readonly IRepository<Cart> _repository;
-
-        public CartController(IRepository<Cart> repository)
+        public CartController(CosmosDBRepository<Cart> repository)
         {
             _repository = repository;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> GetCartAsync(string cartId)
@@ -30,6 +28,7 @@ namespace Simpleecom.Carts.API.Controllers
             var cart = _repository.GetItemsAsync(x => x.Id == id);
             return Ok("Cart");
         }
+
         [HttpPost]
         public IActionResult CreateCart([FromBody] Cart cart)
         {
@@ -41,19 +40,19 @@ namespace Simpleecom.Carts.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateCart([FromBody] Cart cart)
+        public IActionResult UpdateCart([FromBody] Cart cart, string partitionKeyValue)
         {
             if (cart != null)
             {
-                var u = _repository.UpdateAsync(cart.Id,cart);
+                var u = _repository.UpdateAsync(cart.Id, cart, partitionKeyValue);
             }
             return Ok("Cart");
         }
 
         [HttpDelete]
-        public IActionResult DeleteCart(string id)
+        public async Task<IActionResult> DeleteCartAsync(string id)
         {
-            _repository.DeleteAsync(id);
+            await _repository.DeleteAsync(id);
             return Ok("Cart");
         }
     }

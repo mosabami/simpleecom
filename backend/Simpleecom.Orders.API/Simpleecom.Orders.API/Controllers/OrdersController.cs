@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Simpleecom.Shared.Models;
 using Simpleecom.Shared.Repositories;
-using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,25 +10,25 @@ namespace Simpleecom.Orders.API.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly IRepository<Order> _repository;
+        private readonly CosmosDBRepository<Order> _repository;
 
-        public OrdersController(IRepository<Order> repository)
+        public OrdersController(CosmosDBRepository<Order> repository)
         {
             _repository = repository;
         }
 
         [HttpGet]
-        public IActionResult GetOrdersByUser(string userId)
+        public async Task<IActionResult> GetOrdersByUserAsync(string userId)
         {
-            var orders = _repository.GetByIdAsync(userId);
+            var orders = await _repository.GetItemsAsync(x => x.UserId != userId);
             return Ok(orders);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetOrdersByIdAsync(string orderId)
         {
-            var orders = await _repository.GetByIdAsync(orderId);        
-                return Ok(orders);
+            var orders = await _repository.GetByIdAsync(orderId, "");
+            return Ok(orders);
         }
 
         [HttpGet]
@@ -40,16 +39,16 @@ namespace Simpleecom.Orders.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateOrderAsync([FromBody] Order value)
+        public async Task<IActionResult> CreateOrderAsync([FromBody] Order value)
         {
-            _repository.AddAsync(value);
+            await _repository.AddAsync(value);
             return Ok("Order Created");
         }
 
         [HttpDelete]
-        public IActionResult DeleteOrder(string orderId)
+        public async Task<IActionResult> DeleteOrderAsync(string orderId)
         {
-            _repository.DeleteAsync(orderId);
+            await _repository.DeleteAsync(orderId);
             return Ok("Order Deleted");
         }
     }
