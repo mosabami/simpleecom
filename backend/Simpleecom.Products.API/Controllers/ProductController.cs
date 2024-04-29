@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.CosmosRepository;
+﻿using Microsoft.AspNetCore.Mvc;
 using Simpleecom.Shared.Models;
+using Simpleecom.Shared.Repositories;
 
 namespace Simpleecom.Products.API.Controllers
 {
@@ -9,59 +8,67 @@ namespace Simpleecom.Products.API.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IRepository<Product> _repository;
+        private readonly CosmosDBRepository<Product> _repository;
 
-        public ProductController(IRepositoryFactory factory)
+        public ProductController(CosmosDBRepository<Product> repository)
         {
-            _repository = factory.RepositoryOf<Product>();
+            _repository = repository;
         }
 
         [HttpGet]
-        public IActionResult GetProducts()
+        public async Task<IActionResult> GetProductsAsync(string id)
         {
-            var products = _repository.GetAsync(x => x.Id != null);
+            var products = await _repository.GetByIdAsync(id, "Daybird");
             return Ok(products);
         }
+
         [HttpGet]
         public IActionResult GetProductById(string id)
         {
-            var product = _repository.GetAsync(x => x.Id == id);
+            var product = _repository.GetByIdAsync(id, "");
             return Ok("Product");
         }
+
         [HttpPost]
         public IActionResult CreateProduct([FromBody] Product product)
         {
             if (product != null)
             {
-              var p =   _repository.CreateAsync(product);
+                var p = _repository.AddAsync(product);
             }
             return Ok("Product");
         }
 
         [HttpPut(Name = nameof(CreateProduct2))]
-        public ValueTask<Product> CreateProduct2([FromBody] Product product) =>
-      _repository.CreateAsync(product);
+        public Task<Product> CreateProduct2([FromBody] Product product) =>
+            _repository.AddAsync(product);
 
         [HttpPut]
-        public IActionResult UpdateProduct([FromBody] Product product)
+        public async Task<IActionResult> UpdateProductAsync([FromBody] Product product)
         {
             if (product != null)
             {
-               var u = _repository.UpdateAsync(product);
+                await _repository.UpdateAsync(product.Id, product, product.Brand);
             }
 
             return Ok("Product");
         }
 
         [HttpPut(Name = nameof(UpdateProduct2))]
-        public ValueTask<Product> UpdateProduct2([FromBody] Product product) =>
-       _repository.UpdateAsync(product);
+        public Task UpdateProduct2([FromBody] Product product) =>
+            _repository.UpdateAsync(product.Id, product, product.Brand);
 
+        [HttpGet]
+        public async Task<IActionResult> GetItemsAsync(int productId)
+        {
+            var orders = await _repository.GetItemsAsync(x => x.productId != productId);
+            return Ok(orders);
+        }
 
         [HttpDelete]
-        public IActionResult DeleteProduct(string id)
+        public async Task<IActionResult> DeleteProductAsync(string id)
         {
-            _repository.DeleteAsync(_repository.GetAsync(x => x.Id == id).Result.First());
+            await _repository.DeleteAsync(id);
             return Ok("Product");
         }
     }

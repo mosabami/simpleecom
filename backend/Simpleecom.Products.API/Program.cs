@@ -1,17 +1,12 @@
-
-using Microsoft.Azure.CosmosRepository.AspNetCore.Extensions;
-using Microsoft.Azure.CosmosRepository.ChangeFeed;
-using Microsoft.Azure.CosmosRepository.Options;
-using Simpleecom.Shared.Models;
 using Simpleecom.Shared.Options;
 using Simpleecom.Shared.Processors;
-
+using Simpleecom.Shared.Repositories;
 
 namespace Simpleecom.Products.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -19,35 +14,19 @@ namespace Simpleecom.Products.API
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            
             builder.Services.AddEndpointsApiExplorer();
-            var repositoryOptions = builder.Configuration.GetSection(nameof(Shared.Options.RepositoryOptions)).Get<Shared.Options.RepositoryOptions>();
-            var containerOptionsValue = builder.Configuration.GetSection("RepositoryOptions:ContainerOptions").Get<ContainerOptions>();
 
+            builder.Services.Configure<RepositoryOptions>(builder.Configuration.GetSection("RepositoryOptions"));
+            builder.Services.AddSingleton<IProductChangeFeedProcessor, ProductChangeFeedProcessor>();
 
-            builder.Services.AddCosmosRepository(options =>
-            {
-                options.CosmosConnectionString = repositoryOptions.ConnectionString;
-                options.DatabaseId = repositoryOptions.DatabaseId;
-                options.ContainerPerItemType = repositoryOptions.ContainerPerItemType;
-                options.IsAutoResourceCreationIfNotExistsEnabled = repositoryOptions.IsAutoResourceCreationIfNotExistsEnabled;
-
-                options.ContainerBuilder.Configure<Product>(containerOptions =>
-                {
-                    containerOptions.WithContainer(containerOptionsValue.ContainerId);
-                    containerOptions.WithPartitionKey(containerOptionsValue.PartitionKeyPath);
-                    containerOptions.WithChangeFeedMonitoring();
-                });
-
-            });
-
-            builder.Services.AddSingleton<IItemChangeFeedProcessor<Product>, ProductChangeFeedProcessor>();
-            builder.Services.AddCosmosRepositoryChangeFeedHostedService();
-            builder.Services.AddCosmosRepositoryItemChangeFeedProcessors(typeof(ProductChangeFeedProcessor).Assembly);
-
+            builder.Services.AddScoped(typeof(CosmosDBRepository<>));
 
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            await app.Services.GetRequiredService<IProductChangeFeedProcessor>().InitializeAsync();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -56,10 +35,7 @@ namespace Simpleecom.Products.API
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
 
             app.MapControllers();
 

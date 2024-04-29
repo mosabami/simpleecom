@@ -3,15 +3,16 @@ version: '3.4'
 services:
   simpleecom.products.api:
     image: ${DOCKER_REGISTRY-}simpleecomproductsapi
+    ports:
+      - "8084:80"
     build:
       context: .
       dockerfile: Simpleecom.Products.API/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
 
   simpleecom.carts.api:
     image: ${DOCKER_REGISTRY-}simpleecomcartsapi
+    ports:
+      - "8081:80"
     build:
       context: .
       dockerfile: Simpleecom.Cart.API/Dockerfile
@@ -19,6 +20,8 @@ services:
 
   simpleecom.orders.api:
     image: ${DOCKER_REGISTRY-}simpleecomordersapi
+    ports:
+      - "8082:80"
     build:
       context: .
       dockerfile: Simpleecom.Orders.API/Simpleecom.Orders.API/Dockerfile
@@ -26,6 +29,8 @@ services:
 
   simpleecom.auth:
     image: ${DOCKER_REGISTRY-}simpleecomauth
+    ports:
+      - "8083:80"
     build:
       context: .
       dockerfile: Simpleecom.Auth/Dockerfile

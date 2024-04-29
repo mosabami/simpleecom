@@ -1,26 +1,91 @@
-﻿using Microsoft.Azure.CosmosRepository;
-using Microsoft.Azure.CosmosRepository.ChangeFeed;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.Extensions.Options;
 using Simpleecom.Shared.Constants;
 using Simpleecom.Shared.Models;
-
+using Simpleecom.Shared.Options;
+using Simpleecom.Shared.Repositories;
 
 namespace Simpleecom.Shared.Processors
 {
-    public class CartChangeFeedProcessor(ILogger<CartChangeFeedProcessor> logger,
-    IRepository<Order> orderRepository) : IItemChangeFeedProcessor<Cart>
+    public interface ICartChangeFeedProcessor
     {
-        public async ValueTask HandleAsync(Cart cart, CancellationToken cancellationToken)
+        Task InitializeAsync();
+    }
+
+    public class CartChangeFeedProcessor : ICartChangeFeedProcessor
+    {
+        private readonly RepositoryOptions _options;
+        private static Random random = new Random();
+        private readonly CosmosDBRepository<Order> _repository;
+
+        public CartChangeFeedProcessor(IOptions<RepositoryOptions> options, CosmosDBRepository<Order> repository)
         {
-            logger.LogInformation("Change detected for Cart with ID: {CartId}", cart.Id);
+            _options = options.Value;
+            _repository = repository;
+        }
 
-            if(cart.Status == Status.Completed)
-            {
-                logger.LogInformation("Cart with ID: {CartId} has been completed", cart.Id);
-                await orderRepository.CreateAsync(new Order(cart.Total,Status.New,cart.UserId,cart.Products,false), cancellationToken);
+        public async Task InitializeAsync()
+        {
+            string databaseName = _options.DatabaseName;
+            string containerName = _options.ContainerName;
+
+            var cosmosClient = new CosmosClientBuilder(_options.ConnectionString)
+                .WithSerializerOptions(
+                    new CosmosSerializationOptions
+                    {
+                        PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                    }
+                )
+                .Build();
+
+            //return new CosmosClient(configuration["CosmosDbEndpoint"], new DefaultAzureCredential());
+
+            string leaseContainerName = _options.LeaseContainerName;
+            Database database = await cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName);
+            Container container = await database.CreateContainerIfNotExistsAsync(
+                containerName,
+                _options.PartitionKey
+            );
+            Container leaseContainer = await database.CreateContainerIfNotExistsAsync(
+                leaseContainerName,
+                "/id"
+            );
+
+            ChangeFeedProcessor changeFeedProcessor = container
+                .GetChangeFeedProcessorBuilder<Cart>("changeFeedProcessor", HandleChangesAsync)
+                .WithInstanceName($"LeaseInstance-{random}")
+                .WithLeaseContainer(leaseContainer)
+                .Build();
+
+            await changeFeedProcessor.StartAsync();
+        }
+
+        private async Task HandleChangesAsync(
+            IReadOnlyCollection<Cart> changes,
+            CancellationToken cancellationToken
+        )
+        {
+            foreach (var cart in changes)
+            { 
+                if(cart.Status == CartStatus.Completed)
+                {
+                    var order = new Order(cart.Total,OrderStatus.New,cart.UserId,cart.Products,new Guid().ToString(),false);
+                    await _repository.AddAsync(order);
+                    Console.WriteLine($"Completed item: {cart}");
+                    continue;
+                }
+                Console.WriteLine($"Changed item: {cart}");
             }
+            return;
+        }
 
-            logger.LogInformation("Processed change for Cart with ID: {CartId}", cart.Id);
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(
+                Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray()
+            );
         }
     }
 }

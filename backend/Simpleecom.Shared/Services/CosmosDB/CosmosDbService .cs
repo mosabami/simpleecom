@@ -1,6 +1,6 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using System.Configuration;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
-using System.Configuration;
 
 namespace Simpleecom.Shared.Services
 {
@@ -20,5 +20,4 @@ namespace Simpleecom.Shared.Services
             return new CosmosClient(_endpointUrl, _primaryKey);
         }
     }
-
 }
