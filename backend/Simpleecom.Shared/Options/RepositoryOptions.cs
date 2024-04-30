@@ -4,7 +4,6 @@
     {
         public string ConnectionString { get; set; }
         public string DatabaseId { get; set; }
-        public string DatabaseName { get; set; }
         public string PartitionKey { get; set; }
         public string ContainerName { get; set; }
         public bool IsAutoResourceCreationIfNotExistsEnabled { get; set; }
