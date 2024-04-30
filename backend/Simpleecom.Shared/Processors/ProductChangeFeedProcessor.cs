@@ -23,7 +23,7 @@ namespace Simpleecom.Shared.Processors
 
         public async Task InitializeAsync()
         {
-            string databaseName = _options.DatabaseName;
+            string databaseName = _options.DatabaseId;
             string containerName = _options.ContainerName;
 
             var cosmosClient = new CosmosClientBuilder(_options.ConnectionString)
@@ -37,7 +37,7 @@ namespace Simpleecom.Shared.Processors
 
             //return new CosmosClient(configuration["CosmosDbEndpoint"], new DefaultAzureCredential());
 
-            string leaseContainerName = _options.LeaseContainerName;
+            string leaseContainerName = $"Lease" + _options.ContainerName;
             Database database = await cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName);
             Container container = await database.CreateContainerIfNotExistsAsync(
                 containerName,

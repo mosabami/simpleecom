@@ -26,7 +26,7 @@ namespace Simpleecom.Shared.Repositories
                 .Build();
 
             _container = cosmosClient
-                .GetDatabase(_options.DatabaseName)
+                .GetDatabase(_options.DatabaseId)
                 .CreateContainerIfNotExistsAsync(_options.ContainerName, _options.PartitionKey)
                 .Result;
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Simpleecom.Shared.Constants;
 using Simpleecom.Shared.Models;
@@ -18,17 +19,19 @@ namespace Simpleecom.Shared.Processors
         private readonly RepositoryOptions _options;
         private static Random random = new Random();
         private readonly CosmosDBRepository<Product> _repository;
+        private readonly IServiceScopeFactory _scopeFactory;
 
 
-        public OrderChangeFeedProcessor(IOptions<RepositoryOptions> options, CosmosDBRepository<Product> repository)
+        public OrderChangeFeedProcessor(IOptions<RepositoryOptions> options, IServiceScopeFactory scopeFactory)
         {
             _options = options.Value;
-            _repository = repository;
+            _scopeFactory = scopeFactory;
+            _repository = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<CosmosDBRepository<Product>>();
         }
 
         public async Task InitializeAsync()
         {
-            string databaseName = _options.DatabaseName;
+            string databaseName = _options.DatabaseId;
             string containerName = _options.ContainerName;
 
             var cosmosClient = new CosmosClientBuilder(_options.ConnectionString)
@@ -42,7 +45,7 @@ namespace Simpleecom.Shared.Processors
 
             //return new CosmosClient(configuration["CosmosDbEndpoint"], new DefaultAzureCredential());
 
-            string leaseContainerName = _options.LeaseContainerName;
+            string leaseContainerName = $"Lease" + _options.ContainerName;
             Database database = await cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName);
             Container container = await database.CreateContainerIfNotExistsAsync(
                 containerName,
