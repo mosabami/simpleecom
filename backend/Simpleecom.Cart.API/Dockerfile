@@ -9,8 +9,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Simpleecom.Cart.API/Simpleecom.Carts.API.csproj", "Simpleecom.Cart.API/"]
-COPY ["Microsoft.Azure.CosmosRepository.AspNetCore/Microsoft.Azure.CosmosRepository.AspNetCore.csproj", "Microsoft.Azure.CosmosRepository.AspNetCore/"]
-COPY ["Microsoft.Azure.CosmosRepository/Microsoft.Azure.CosmosRepository.csproj", "Microsoft.Azure.CosmosRepository/"]
 COPY ["Simpleecom.Shared/Simpleecom.Shared.csproj", "Simpleecom.Shared/"]
 RUN dotnet restore "./Simpleecom.Cart.API/Simpleecom.Carts.API.csproj"
 COPY . .
