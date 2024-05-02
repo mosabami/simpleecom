@@ -2,16 +2,18 @@
 {
     public class User : Item
     {
-        public User(string name, string email)
+        public User(string firstName,string lastName, string email)
         {
-            this.Name = name;
+            this.FirstName = firstName;
+            this.LastName = lastName;
             this.Email = email;
         }
 
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
 
         public string Email { get; set; }
 
-        protected override string GetPartitionKeyValue() => Email;
     }
 }
