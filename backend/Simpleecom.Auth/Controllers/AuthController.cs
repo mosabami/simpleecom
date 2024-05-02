@@ -16,16 +16,24 @@ namespace Simpleecom.Auth.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegisterUserAsync(User user)
+        public async Task<IActionResult> RegisterUser(User user)
         {
             var u = await _repository.AddAsync(user);
             return Ok();
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUserAsync(string userId)
+        public async Task<IActionResult> GetUser(string userId)
         {
             var u = await _repository.GetItemsAsync(x => x.Id == userId);
+            return Ok(u.FirstOrDefault());
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Login(string email)
+        {
+            var u = await _repository.GetItemsAsync(x => x.Email == email);
             return Ok(u.FirstOrDefault());
         }
     }
