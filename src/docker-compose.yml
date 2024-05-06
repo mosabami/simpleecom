@@ -1,0 +1,37 @@
+version: '3.4'
+
+services:
+  simpleecom.products.api:
+    image: ${DOCKER_REGISTRY-}simpleecomproductsapi
+    ports:
+      - "8084:80"
+    build:
+      context: .
+      dockerfile: Simpleecom.Products.API/Dockerfile
+
+  simpleecom.carts.api:
+    image: ${DOCKER_REGISTRY-}simpleecomcartsapi
+    ports:
+      - "8085:80"
+    build:
+      context: .
+      dockerfile: Simpleecom.Cart.API/Dockerfile 
+
+
+  simpleecom.orders.api:
+    image: ${DOCKER_REGISTRY-}simpleecomordersapi
+    ports:
+      - "8082:80"
+    build:
+      context: .
+      dockerfile: Simpleecom.Orders.API/Simpleecom.Orders.API/Dockerfile 
+
+
+  simpleecom.auth:
+    image: ${DOCKER_REGISTRY-}simpleecomauth
+    ports:
+      - "8083:80"
+    build:
+      context: .
+      dockerfile: Simpleecom.Auth/Dockerfile
+
