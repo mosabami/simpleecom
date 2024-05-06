@@ -45,9 +45,9 @@ namespace Simpleecom.Orders.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrderAsync([FromBody] Order value)
+        public async Task<IActionResult> CreateOrderAsync([FromBody] CreateOrderDto order)
         {
-            await _repository.AddAsync(value);
+            await _repository.AddAsync(new Order(order));
             return Ok("Order Created");
         }
 

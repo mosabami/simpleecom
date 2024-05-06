@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Simpleecom.Shared.Models.User;
 using Simpleecom.Shared.Repositories;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Simpleecom.Auth.Controllers
 {
@@ -16,10 +17,13 @@ namespace Simpleecom.Auth.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegisterUser(User user)
+        public async Task<IActionResult> RegisterUser(CreateUserDto user)
         {
-            var u = await _repository.AddAsync(user);
-            return Ok();
+            var existing = await _repository.GetItemsAsync(x => x.Email == user.Email);
+            if (existing.Count() > 0)
+                return Conflict("User already exists");
+            var u = await _repository.AddAsync(new Shared.Models.User.User(user));
+            return Ok(u);
         }
 
         [HttpGet]

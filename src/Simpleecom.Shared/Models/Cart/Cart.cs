@@ -5,11 +5,22 @@ namespace Simpleecom.Shared.Models
 {
     public class Cart : Item
     {
+        public Cart()
+        {
+        }
+
         public Cart(List<CartProduct> products, bool isCompleted, string userId)
         {
             this.Products = products;
             this.IsCompleted = isCompleted;
             this.UserId = userId;
+        }
+
+        public Cart(CreateCartDto cart)
+        {
+            this.Products = cart.Products;  
+            this.IsCompleted = cart.IsCompleted;    
+            this.UserId = cart.UserId;      
         }
 
         public List<CartProduct> Products { get; set;}
@@ -49,5 +60,12 @@ namespace Simpleecom.Shared.Models
         public double ProductPrice { get; set; }
         public int ProductQuantity { get; set; }
 
+    }
+
+    public class CreateCartDto
+    {
+        public List<CartProduct> Products { get; set; }
+        public bool IsCompleted { get; set; }
+        public string UserId { get; set; }
     }
 }

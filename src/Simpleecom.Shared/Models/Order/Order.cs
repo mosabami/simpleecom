@@ -6,6 +6,9 @@ namespace Simpleecom.Shared.Models
     public class Order : Item
     {
        
+        public Order()
+        {
+        }
 
         public Order(
             string UserId,
@@ -20,6 +23,12 @@ namespace Simpleecom.Shared.Models
             this.OrderId = OrderId;
         }
 
+        public Order(CreateOrderDto order)
+        {
+            this.UserId = order.UserId;
+            this.Products = order.Products;
+            this.OrderTotal = order.OrderTotal;
+        }
 
         public List<OrderProduct> Products { get; set; }
 
@@ -60,6 +69,14 @@ namespace Simpleecom.Shared.Models
         public string ProductName { get; set; }
         public double ProductPrice { get; set; }
         public int ProductQuantity { get; set; }
+
+    }
+
+    public class CreateOrderDto
+    {
+        public List<OrderProduct> Products { get; set; }
+        public string UserId { get; set; }
+        public double OrderTotal { get; set; }
 
     }
 

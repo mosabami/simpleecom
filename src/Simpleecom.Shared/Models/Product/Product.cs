@@ -4,6 +4,10 @@ namespace Simpleecom.Shared.Models
 {
     public class Product : Item
     {
+        public Product()
+        {
+        }
+
         public Product(
             string name,
             string Description,
@@ -21,6 +25,16 @@ namespace Simpleecom.Shared.Models
             this.Inventory = Inventory;
             this.Brand = Brand;
             this.ProductId = productId;
+        }
+
+        public Product(CreateProductDto product)
+        {
+            this.Name = product.Name;
+            this.Description = product.Description;
+            this.PhotoURL = product.PhotoURL;
+            this.Price = product.Price;
+            this.Inventory = product.Inventory;
+            this.Brand = product.Brand;
         }
 
         public string Name { get; set; }
@@ -59,5 +73,24 @@ namespace Simpleecom.Shared.Models
 
         public string GetPartitionKeyValue() => Brand;
 
+    }
+
+    public class CreateProductDto
+    {
+        [Required]
+        public string Name { get; set; }
+
+        public string Description { get; set; } = string.Empty;
+
+        public string PhotoURL { get; set; } = string.Empty;
+
+        [Required]
+        public double Price { get; set; }
+
+        [Required]
+        public int Inventory { get; set; }
+
+        [Required]
+        public string Brand { get; set; }
     }
 }

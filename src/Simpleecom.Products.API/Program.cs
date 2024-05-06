@@ -17,6 +17,8 @@ namespace Simpleecom.Products.API
             
             builder.Services.AddEndpointsApiExplorer();
 
+            var ccs = builder.Configuration.GetValue<string>("CosmosConnectionString");
+
             builder.Services.Configure<RepositoryOptions>(builder.Configuration.GetSection("RepositoryOptions"));
             builder.Services.AddSingleton<IProductChangeFeedProcessor, ProductChangeFeedProcessor>();
 

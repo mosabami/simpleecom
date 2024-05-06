@@ -34,11 +34,11 @@ namespace Simpleecom.Carts.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCartAsync([FromBody] Cart cart)
+        public async Task<IActionResult> CreateCart([FromBody] CreateCartDto cart)
         {
             if (cart != null)
             {
-               await _repository.AddAsync(cart);
+               await _repository.AddAsync(new Cart(cart));
             }
             return Ok("Cart");
         }

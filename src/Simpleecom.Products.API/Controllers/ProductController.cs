@@ -35,11 +35,11 @@ namespace Simpleecom.Products.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProduct([FromBody] Product product)
+        public IActionResult CreateProduct([FromBody] CreateProductDto product)
         {
             if (product != null)
             {
-                var p = _repository.AddAsync(product);
+                var p = _repository.AddAsync(new Product(product));
                 return Ok("Product");
             }
             return BadRequest();

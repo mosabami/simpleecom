@@ -1,12 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Simpleecom.Shared.Models.User
 {
     public class User : Item
     {
-        public User(string email)
+        public User()
         {
-            this.Email = email;
+        }
+
+        public User(CreateUserDto userDto)
+        {
+            this.Email = userDto.Email;
         }
 
         public string? FirstName { get; set; }
@@ -37,5 +42,10 @@ namespace Simpleecom.Shared.Models.User
             }
         }
 
+    }
+    public class CreateUserDto
+    {
+        [Required]
+        public string Email { get; set; }
     }
 }
