@@ -5,16 +5,16 @@ namespace Simpleecom.Shared.Models
 {
     public class Cart : Item
     {
-        public Cart(List<CartProduct> products, string status, string userId)
+        public Cart(List<CartProduct> products, bool isCompleted, string userId)
         {
             this.Products = products;
-            this.Status = status;
+            this.IsCompleted = isCompleted;
             this.UserId = userId;
         }
 
         public List<CartProduct> Products { get; set;}
 
-        public string Status { get; set; }
+        public bool IsCompleted { get; set; } = false;
 
         [Required]
         public string UserId { get; set; }
