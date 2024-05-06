@@ -16,7 +16,7 @@ namespace Simpleecom.Shared.Models
         {
             this.UserId = UserId;
             this.Products = products;
-            this.IsCompeted = isCompleted;
+            this.IsCompleted = isCompleted;
             this.OrderId = OrderId;
         }
 
@@ -28,7 +28,7 @@ namespace Simpleecom.Shared.Models
         [Required]
         public string UserId { get; set; }
 
-        public bool IsCompeted { get; set; } = false;
+        public bool IsCompleted { get; set; } = false;
 
         private string _orderId;
         public string OrderId
