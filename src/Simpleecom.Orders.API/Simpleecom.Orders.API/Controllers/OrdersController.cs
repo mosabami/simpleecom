@@ -25,9 +25,9 @@ namespace Simpleecom.Orders.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOrdersByIdAsync(string orderId)
+        public async Task<IActionResult> GetOrdersByIdAsync(string orderId, string userId)
         {
-            var orders = await _repository.GetByIdAsync(orderId, "");
+            var orders = await _repository.GetByIdAsync(orderId, userId);
             
             if (orders == null)
                 return NotFound();

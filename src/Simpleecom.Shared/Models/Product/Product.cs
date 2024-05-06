@@ -1,4 +1,6 @@
-﻿namespace Simpleecom.Shared.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Simpleecom.Shared.Models
 {
     public class Product : Item
     {
@@ -31,6 +33,7 @@
 
         public int Inventory { get; set; }
 
+        [Required]
         public string Brand { get; set; }
 
         private string _productId;

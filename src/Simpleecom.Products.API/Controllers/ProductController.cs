@@ -15,18 +15,23 @@ namespace Simpleecom.Products.API.Controllers
             _repository = repository;
         }
 
+      
         [HttpGet]
-        public async Task<IActionResult> GetProductsAsync(string id)
+        public IActionResult GetProductById(string id, string brand)
         {
-            var products = await _repository.GetByIdAsync(id, "Daybird");
-            return Ok(products);
+            var product = _repository.GetByIdAsync(id, brand);
+            return Ok("Product");
         }
 
         [HttpGet]
-        public IActionResult GetProductById(string id)
+        public async Task<IActionResult> GetProductById(string id)
         {
-            var product = _repository.GetByIdAsync(id, "");
-            return Ok("Product");
+            var orders = await _repository.GetItemsAsync(x => x.ProductId == id);
+            if (orders == null)
+            {
+                return NotFound();
+            }
+            return Ok(orders.FirstOrDefault());
         }
 
         [HttpPost]
@@ -49,19 +54,19 @@ namespace Simpleecom.Products.API.Controllers
                 await _repository.UpdateAsync(product.Id, product, product.Brand);
             }
 
-            return Ok("Product");
+            return Ok();
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> GetItemsAsync(string productId)
+        public async Task<IActionResult> GetProducts()
         {
-            var orders = await _repository.GetItemsAsync(x => x.ProductId != productId);
-            if(orders == null)
+            var products = await _repository.GetItemsAsync(x => x.ProductId == null);
+            if(products == null)
             {
                 return NotFound();
             }
-            return Ok(orders);
+            return Ok(products);
         }
 
         [HttpDelete]

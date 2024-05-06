@@ -62,4 +62,5 @@ namespace Simpleecom.Shared.Models
         public int ProductQuantity { get; set; }
 
     }
+
 }

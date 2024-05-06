@@ -44,11 +44,11 @@ namespace Simpleecom.Carts.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCartAsync([FromBody] Cart cart, string partitionKeyValue)
+        public async Task<IActionResult> UpdateCartAsync([FromBody] Cart cart, string userId)
         {
             if (cart != null)
             {
-                await _repository.UpdateAsync(cart.Id, cart, partitionKeyValue);
+                await _repository.UpdateAsync(cart.Id, cart, userId);
             }
             return Ok("Cart");
         }

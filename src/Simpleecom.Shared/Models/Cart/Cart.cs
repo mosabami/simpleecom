@@ -39,8 +39,6 @@ namespace Simpleecom.Shared.Models
                 }
             }
         }
-
-        protected override string GetPartitionKeyValue() => UserId;
     }
 
     public class CartProduct
