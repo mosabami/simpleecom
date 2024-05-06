@@ -35,8 +35,11 @@ namespace Simpleecom.Products.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProduct([FromBody] CreateProductDto product)
+        public async Task<IActionResult> CreateProductAsync([FromBody] CreateProductDto product)
         {
+            var existing = await _repository.GetItemsAsync(x => x.ProductId == product.ProductId);
+            if (existing.Count() > 0)
+                return Conflict("Product already exists");
             if (product != null)
             {
                 var p = _repository.AddAsync(new Product(product));

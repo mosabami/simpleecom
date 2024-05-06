@@ -75,6 +75,6 @@ namespace Simpleecom.Shared.Models
         public string Brand { get; set; }
 
         [Required]
-        public string ProductId { get; set; }
+        public int ProductId { get; set; }
     }
 }
