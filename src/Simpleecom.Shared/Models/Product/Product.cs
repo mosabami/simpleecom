@@ -15,7 +15,7 @@ namespace Simpleecom.Shared.Models
             double Price,
             int Inventory,
             string Brand,
-            string productId
+            int productId
         )
         {
             this.Name = name;
@@ -50,26 +50,7 @@ namespace Simpleecom.Shared.Models
         [Required]
         public string Brand { get; set; }
 
-        private string _productId;
-        public string ProductId
-        {
-            get
-            {
-
-                return base.Id;
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    _productId = string.Empty;
-                }
-                else
-                {
-                    _productId = value;
-                }
-            }
-        }
+        public int ProductId { get; set; }
 
         public string GetPartitionKeyValue() => Brand;
 
@@ -92,5 +73,8 @@ namespace Simpleecom.Shared.Models
 
         [Required]
         public string Brand { get; set; }
+
+        [Required]
+        public string ProductId { get; set; }
     }
 }

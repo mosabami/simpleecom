@@ -10,5 +10,6 @@ namespace Simpleecom.Shared.Repositories
         Task UpdateAsync(string id, T item, string partitionKeyValue);
         Task DeleteAsync(string id);
         Task<IEnumerable<T>> GetItemsAsync(Func<T, bool> predicate);
+        Task<T> UpsertAsync(T item);
     }
 }

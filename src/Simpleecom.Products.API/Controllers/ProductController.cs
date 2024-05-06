@@ -26,7 +26,7 @@ namespace Simpleecom.Products.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductById(string id)
         {
-            var orders = await _repository.GetItemsAsync(x => x.ProductId == id);
+            var orders = await _repository.GetItemsAsync(x => x.Id == id);
             if (orders == null)
             {
                 return NotFound();
@@ -61,7 +61,7 @@ namespace Simpleecom.Products.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _repository.GetItemsAsync(x => x.ProductId == null);
+            var products = await _repository.GetItemsAsync(x => x.Id != null);
             if(products == null)
             {
                 return NotFound();

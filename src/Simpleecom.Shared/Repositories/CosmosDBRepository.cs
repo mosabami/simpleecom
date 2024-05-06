@@ -74,6 +74,11 @@ namespace Simpleecom.Shared.Repositories
                 new PartitionKey(partitionKeyValue)
             );
         }
+        public async Task<T> UpsertAsync(T item)
+        {
+            ItemResponse<T> response = await _container.UpsertItemAsync(item);
+            return response.Resource;
+        }
 
         public async Task DeleteAsync(string id)
         {
