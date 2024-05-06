@@ -1,4 +1,5 @@
 ﻿using Simpleecom.Shared.Repositories;
+using System.ComponentModel.DataAnnotations;
 
 namespace Simpleecom.Shared.Models
 {
@@ -15,6 +16,7 @@ namespace Simpleecom.Shared.Models
 
         public string Status { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
         private string _cartId;

@@ -2,7 +2,7 @@
 
 namespace Simpleecom.Products.API.Services
 {
-    public class ProductService : IProduct
+    public class ProductService 
     {
         public ProductService() { }
 

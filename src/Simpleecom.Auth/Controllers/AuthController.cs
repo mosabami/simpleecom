@@ -25,7 +25,9 @@ namespace Simpleecom.Auth.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUser(string userId)
         {
-            var u = await _repository.GetItemsAsync(x => x.Id == userId);
+            var u = await _repository.GetItemsAsync(x => x.UserId == userId);
+            if (u.Count() == 0)
+                return NotFound();
             return Ok(u.FirstOrDefault());
         }
 

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace Simpleecom.Shared.Models
 {
@@ -24,6 +25,7 @@ namespace Simpleecom.Shared.Models
 
         public double OrderTotal { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
         public bool IsUpdate { get; set; }

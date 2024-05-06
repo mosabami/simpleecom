@@ -1,4 +1,6 @@
-﻿namespace Simpleecom.Shared.Models.User
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Simpleecom.Shared.Models.User
 {
     public class User : Item
     {
@@ -13,6 +15,7 @@
 
         public string LastName { get; set; }
 
+        [Required]
         public string Email { get; set; }
 
         private string _userId;
