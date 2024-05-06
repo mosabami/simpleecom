@@ -17,7 +17,7 @@ namespace Simpleecom.Products.API.Controllers
 
       
         [HttpGet]
-        public IActionResult GetProductById(string id, string brand)
+        public IActionResult GetProductByIdBrand(string id, string brand)
         {
             var product = _repository.GetByIdAsync(id, brand);
             return Ok("Product");
