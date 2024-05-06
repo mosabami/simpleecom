@@ -36,7 +36,7 @@ namespace Simpleecom.Shared.Models
             get
             {
                 
-               return _orderId;
+               return base.Id;
             }
             set
             {

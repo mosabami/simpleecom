@@ -42,13 +42,13 @@ namespace Simpleecom.Shared.Models
             get
             {
 
-                return _productId;
+                return base.Id;
             }
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    _productId = Guid.NewGuid().ToString();
+                    _productId = string.Empty;
                 }
                 else
                 {

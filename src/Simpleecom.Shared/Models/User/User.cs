@@ -22,13 +22,13 @@ namespace Simpleecom.Shared.Models.User
             get
             {
 
-                return _userId;
+                return base.Id;
             }
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    _userId = Guid.NewGuid().ToString();
+                    _userId = string.Empty;
                 }
                 else
                 {
