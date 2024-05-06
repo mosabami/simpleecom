@@ -8,12 +8,22 @@ services:
       - carts
       - orders
       - auth
+      - dataprep
     restart: always
     build:
       dockerfile: Dockerfile
       context: ./nginx
     ports:
       - '3050:80'
+  dataprep:
+    image: ${DOCKER_REGISTRY-}datapreparer
+    ports:
+      - '5000:5000'
+    environment:
+      - STORAGE_BASE_URL=https://simpleecom.blob.core.windows.net/awesomeeshop/
+    build:
+      context: ./prepdata
+      dockerfile: Dockerfile
   frontend:
     image: ${DOCKER_REGISTRY-}simpleecomfrontend
     ports:
