@@ -4,22 +4,20 @@ namespace Simpleecom.Shared.Models.User
 {
     public class User : Item
     {
-        public User(string firstName,string lastName, string email)
+        public User(string email)
         {
-            this.FirstName = firstName;
-            this.LastName = lastName;
             this.Email = email;
         }
 
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         [Required]
         public string Email { get; set; }
 
         private string _userId;
-        public string UserId
+        public string? UserId
         {
             get
             {
