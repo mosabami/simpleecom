@@ -35,13 +35,11 @@ namespace Simpleecom.Products.API.Controllers
             if (product != null)
             {
                 var p = _repository.AddAsync(product);
+                return Ok("Product");
             }
-            return Ok("Product");
+            return BadRequest();
         }
 
-        [HttpPut(Name = nameof(CreateProduct2))]
-        public Task<Product> CreateProduct2([FromBody] Product product) =>
-            _repository.AddAsync(product);
 
         [HttpPut]
         public async Task<IActionResult> UpdateProductAsync([FromBody] Product product)
@@ -54,14 +52,15 @@ namespace Simpleecom.Products.API.Controllers
             return Ok("Product");
         }
 
-        [HttpPut(Name = nameof(UpdateProduct2))]
-        public Task UpdateProduct2([FromBody] Product product) =>
-            _repository.UpdateAsync(product.Id, product, product.Brand);
 
         [HttpGet]
         public async Task<IActionResult> GetItemsAsync(string productId)
         {
             var orders = await _repository.GetItemsAsync(x => x.ProductId != productId);
+            if(orders == null)
+            {
+                return NotFound();
+            }
             return Ok(orders);
         }
 

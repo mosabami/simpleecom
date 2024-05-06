@@ -24,10 +24,6 @@ namespace Simpleecom.Shared.Repositories
                         PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
                     }
                 )
-                //.WithHttpClientFactory(() => new HttpClient(new HttpClientHandler()
-                //{
-                //    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                //})).WithConnectionModeGateway()
                 .Build();
 
             _container = cosmosClient

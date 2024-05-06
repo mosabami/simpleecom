@@ -20,7 +20,7 @@ namespace Simpleecom.Orders.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOrdersByUserAsync(string userId)
         {
-            var orders = await _repository.GetItemsAsync(x => x.UserId != userId);
+            var orders = await _repository.GetItemsAsync(x => x.UserId == userId);
             return Ok(orders);
         }
 
@@ -28,13 +28,19 @@ namespace Simpleecom.Orders.API.Controllers
         public async Task<IActionResult> GetOrdersByIdAsync(string orderId)
         {
             var orders = await _repository.GetByIdAsync(orderId, "");
+            
+            if (orders == null)
+                return NotFound();
+
             return Ok(orders);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetItemsAsync(string orderId)
         {
-            var orders = await _repository.GetItemsAsync(x => x.OrderId != orderId);
+            var orders = await _repository.GetItemsAsync(x => x.OrderId == orderId);
+            if(orders == null)
+                return NotFound();
             return Ok(orders);
         }
 
