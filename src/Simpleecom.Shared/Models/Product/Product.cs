@@ -35,6 +35,7 @@ namespace Simpleecom.Shared.Models
             this.Price = product.Price;
             this.Inventory = product.Inventory;
             this.Brand = product.Brand;
+            this.ProductId = product.ProductId;
         }
 
         public string Name { get; set; }
