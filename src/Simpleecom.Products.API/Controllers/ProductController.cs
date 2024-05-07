@@ -54,7 +54,7 @@ namespace Simpleecom.Products.API.Controllers
         {
             if (product != null)
             {
-                await _repository.UpdateAsync(product.Id, product, product.Brand);
+                await _repository.UpsertAsync( product);
             }
 
             return Ok();

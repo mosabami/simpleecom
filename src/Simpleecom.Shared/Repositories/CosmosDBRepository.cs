@@ -66,14 +66,6 @@ namespace Simpleecom.Shared.Repositories
             return response.Resource;
         }
 
-        public async Task UpdateAsync(string id, T item, string partitionKeyValue)
-        {
-            await _container.ReplaceItemAsync(
-                item,
-                item.Id,
-                new PartitionKey(partitionKeyValue)
-            );
-        }
         public async Task<T> UpsertAsync(T item)
         {
             ItemResponse<T> response = await _container.UpsertItemAsync(item);
@@ -96,6 +88,11 @@ namespace Simpleecom.Shared.Repositories
             {
                throw new Exception($"Item not found " + ex.Message);
             }
+        }
+
+        public Task UpdateAsync(string id, T item, string partitionKeyValue)
+        {
+            throw new NotImplementedException();
         }
     }
 }
