@@ -4,11 +4,14 @@ import json
 import os
 from generate_products_data import GenerateProductsData  # Import the GenerateProductsData class
 
-
+from dotenv import load_dotenv
 storageBaseUrl =  os.getenv('STORAGE_BASE_URL', 'https://simpleecom.blob.core.windows.net/awesomeeshop')
 
 app = Flask(__name__)
 
+@app.route('/prepdata')
+def home():
+    return 'Welcome to the prepdata API'
 
 @app.route('/prepdata/send_data', methods=['GET'])
 def send_data():
@@ -35,4 +38,4 @@ def delete_data():
     return 'Data deleted', 200
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
