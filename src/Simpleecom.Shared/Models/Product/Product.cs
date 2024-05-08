@@ -51,25 +51,6 @@ namespace Simpleecom.Shared.Models
         [Required]
         public string Brand { get; set; }
 
-        //private int _productId;
-        //public int ProductId
-        //{
-        //    get
-        //    {
-
-        //        return _productId;
-        //    }
-        //    set
-        //    {
-        //        _productId = value;
-        //        if (value > 0)
-        //        {
-        //            base.Id = value.ToString();
-        //        }
-                
-        //    }
-        //}
-
         public string GetPartitionKeyValue() => Brand;
 
     }

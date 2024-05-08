@@ -19,6 +19,9 @@ namespace Simpleecom.Shared.Models.User
         public User(CreateUserDto userDto)
         {
             this.Email = userDto.Email;
+            this.cart = new Cart();
+            this.cart.UserId = this.Id;
+            
         }
 
         [Required]
