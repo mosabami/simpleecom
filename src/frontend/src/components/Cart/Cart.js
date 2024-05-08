@@ -2,8 +2,8 @@
 import React from 'react';
 import './Cart.css'; // Import the CSS
 
-const Cart = ({ order,  clearOrder }) => {
-    let total = order.products.reduce((sum, product) => {
+const Cart = ({ cart,  clearCart }) => {
+    let total = cart.products.reduce((sum, product) => {
         return sum + product.productPrice * product.productQuantity;
     }, 0);
 
@@ -20,9 +20,9 @@ const Cart = ({ order,  clearOrder }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.keys(order).map(product => {
+                    {Object.keys(cart).map(product => {
                         return product ? (
-                            <tr key={product.productId}>
+                            <tr key={product.id}>
                                 <td>{product.productName}</td>
                                 <td>${product.productPrice}</td>
                                 <td>{product.productQuantity}</td>
@@ -38,7 +38,7 @@ const Cart = ({ order,  clearOrder }) => {
                     </tr>
                 </tfoot>
             </table>
-            <button onClick={clearOrder} className="clear-cart-button">Place Order</button> {/* Add the CSS class */}
+            <button onClick={clearCart} className="clear-cart-button">Place Order</button> {/* Add the CSS class */}
         </div>
     );
 };
