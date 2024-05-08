@@ -26,16 +26,12 @@ services:
       context: ./prepdata
       dockerfile: Dockerfile
   frontend:
-    image: ${DOCKER_REGISTRY-}simpleecomfrontend
     ports:
       - '3000:3000'
     environment:
-      - HOMEPAGE_PIC=https://simpleecom.blob.core.windows.net/awesomeeshop/eshop_homepage.png
-      - BASE_URL=
-      - AUTH_URL=
-      - PRODUCTS_URL=products
-      - CART_URL=carts
-      - ORDERS_URL=orders
+      - REACT_APP_HOMEPAGE_PIC=https://simpleecom.blob.core.windows.net/awesomeeshop/eshop_homepage.png
+      - REACT_APP_API_BASE_URL=
+
     build:
       context: ./frontend
       dockerfile: Dockerfile

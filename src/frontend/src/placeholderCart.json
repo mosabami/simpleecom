@@ -1,6 +1,5 @@
 {
     "type": "string",
     "products": [
-    ],
-    "isCompleted": true
-  }
+    ]
+}

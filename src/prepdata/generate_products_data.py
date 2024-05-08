@@ -13,6 +13,7 @@ class GenerateProductsData():
             self.catalog_data = response.json()
             print('Data fetched successfully from the Dotnet\'s repo.')
         except (requests.exceptions.RequestException, ValueError):
+            print('Failed to fetch data from the Dotnet\'s repo. Using local data instead.')
             with open('catalog.json') as f:
                 self.catalog_data = json.load(f)
         # Get the storage base URL from environment variables
@@ -25,9 +26,9 @@ class GenerateProductsData():
         catalog_data = []
         for item in self.catalog_data:
             new_item = {}
-            prodId = item.get('Id')
+            prodId = str(item.get('Id'))
+            print(f'Creating product with ID {type(prodId)}')
             new_item['id'] = prodId
-            new_item["productId"] = prodId
             new_item['name'] = item.get('Name')
             new_item['description'] = item.get('Description')
             new_item['photoURL'] = f'{self.storageBaseUrl}/{prodId}.webp'
@@ -59,4 +60,5 @@ if __name__ == '__main__':
     from dotenv import load_dotenv
     load_dotenv()
     storageBaseUrl =  os.getenv('STORAGE_BASE_URL', 'https://simpleecom.blob.core.windows.net/awesomeeshop')
+    print(f'storageBaseUrl: {storageBaseUrl}')
     GenerateProductsData(storageBaseUrl)

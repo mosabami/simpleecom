@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.css'; // Import the CSS
 
-let homepage_pic = process.env.HOMEPAGE_PIC || 'https://simpleecom.blob.core.windows.net/awesomeeshop/eshop_homepage.png';
+let homepage_pic = process.env.REACT_APP_HOMEPAGE_PIC || 'https://simpleecom.blob.core.windows.net/awesomeeshop/eshop_homepage.png';
 
 const LoginPage = ({ onLogin, loggedIn, wrongEmail }) => {
   const [email, setEmail] = useState('');

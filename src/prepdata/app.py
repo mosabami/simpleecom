@@ -27,7 +27,7 @@ app = Flask(__name__)
 def home():
     return 'Welcome to the prepdata API'
 
-@app.route('/prepdata/send_data', methods=['POST'])
+@app.route('/prepdata/send_data', methods=['GET']) # using GET here instead of post so data can be loaded using a browser
 def send_data():
     """Check to see if the product data exists in memory. If it doesn't, 
     generate the data using the GenerateProductsData class, and then send the data to the API."""

@@ -10,87 +10,73 @@ import LoginPage from './components/LoginRegistration/LoginPage';
 import RegisterPage from './components/LoginRegistration/RegisterPage';
 // import productsData from './catalog.json';
 import placeholderCart from './placeholderCart.json';
+let base_url = process.env.REACT_APP_API_BASE_URL || '';
+console.log(`base_url: ${base_url}`);
 
-let base_url = process.env.BASE_URL || 'http://localhost:';
-let auth_url = process.env.AUTH_URL || '';
-console.log(`auth_url: ${auth_url}`);
-let products_url = process.env.PRODUCTS_URL || base_url +  '8084';
-let cart_url = process.env.CART_URL || "";
-let orders_url = process.env.ORDERS_URL || base_url +  '8082';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [wrongEmail, setwrongEmail] = useState(false);
-  const [order, setOrder] = useState({});
-  const [userID, setUserID] = useState(""); 
+  const [cart, setCart] = useState({});
+  const [userID, setUserID] = useState("");
+  const [products, setProducts] = useState([]);
 
-
-  // const handleLogin = (email) => {
-  //   if (validEmailsState.includes(email)) {
-  //     setLoggedIn(true);
-  //     setwrongEmail(false);
-  //   }
-  //   else {
-  //     setwrongEmail(true);
-  //   }
-  // };
-
-const handleLogin = async (email) => {
-    let login_endpoint = `${auth_url}/api/Auth/Login?email=${encodeURIComponent(email)}`;
-    let cart_endpoint = `${cart_url}/api/Cart/GetCart?userId=`;
-
+  const handleLogin = async (email) => {
+    let login_endpoint = `${base_url}/api/Auth/Login?email=${encodeURIComponent(email)}`;
     console.log(`login_endpoint: ${login_endpoint}`);
 
     try {
-        let response = await fetch(login_endpoint);
-        if (!response.ok) {
-            setwrongEmail(true);
-            throw new Error('Email not registered');
-        }
+      let response = await fetch(login_endpoint);
+      if (!response.ok) {
+        setwrongEmail(true);
+        throw new Error('Email not registered');
+      }
+      let data = await response.json();
+      setLoggedIn(true);
+      setUserID(data["id"]);
+      setwrongEmail(false);
+      let productResponse = await fetch(`${base_url}/api/Product/GetProducts`)
+        .then(response => response.json())
+        .catch((error) => {
+          console.error('Error:', error);
+        });
 
-        let data = await response.json();
-        let cart = {};
-        setLoggedIn(true);
-        setUserID(data["id"]);
-        setwrongEmail(false);
-        products = await fetch(products_url).then(response => response.json());
-        response = await fetch(cart_endpoint + userID);
-        if (!response.ok) {
-            cart = placeholderCart;
-            placeholderCart.userId = userID;
-        }
-        else {
-          cart = await response.json();
-        }
-        setOrder(cart);
+      if (productResponse) {
+        setProducts(productResponse);
+        console.log('productResponse:', productResponse);
+        console.log('products:', products);
+      } else {
+        console.error('Error: productResponse is undefined');
+      }
+      setCart(productResponse?.cart ?? placeholderCart);
     } catch (error) {
-        console.error('Error:', error);
+      console.error('Error:', error);
     }
-};
+  };
 
   // const handleRegister = (email) => {
   //   setValidEmailsState(prevEmails => [...prevEmails, email]);
   // };
 
   const handleRegister = (email) => {
-    let url = `${auth_url}/api/Auth/RegisterUser`;
+    let url = `${base_url}/api/Auth/RegisterUser`;
     console.log(url);
-    
+
     return fetch(url, {
       method: 'POST',
       headers: {
-          'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email: email,id:"ee",firstName:"hi",lastName:"aa",type:"user" }),
-  })
-  .then(response => response.json())
-  .then(data => {
-      console.log(data);
-      return Math.random(); // return a random number
-  })
-  .catch((error) => {
-      console.error('Error:', error);
-  });
+      body: JSON.stringify({ email: email, id: "ee", firstName: "hi", lastName: "aa", type: "user" }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        return Math.random(); // return a random number
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
 
   };
 
@@ -98,81 +84,78 @@ const handleLogin = async (email) => {
     setLoggedIn(false);
   };
 
-  // const clearOrder = () => {
-  //   setOrder({});
-  // };
 
-  const clearOrder = () => {
-    setOrder({});
-    let url = `${cart_url}/api/Cart/DeleteCart`;
+  const clearCart = () => {
+    setCart({});
+    let url = `${base_url}/api/Cart/DeleteCart`;
 
     fetch(url, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId: userID }), // replace userID with the actual userID
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: userID }), // replace userID with the actual userID
     })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch((error) => {
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch((error) => {
         console.error('Error:', error);
-    });
+      });
   };
 
-// This function handles adding a product to the cart.
-const handleAddToCart = (productId, productName, productPrice) => {
-  setOrder(prevOrder => {
-    // Find the index of the product in the products array
-    const productIndex = prevOrder.products.findIndex(product => product.productId === productId);
+  // This function handles adding a product to the cart.
+  const handleAddToCart = (id, productName, productPrice) => {
+    setCart(prevCart => {
+      // Find the index of the product in the products array
+      const productIndex = prevCart.products.findIndex(product => product.id === id);
 
-    if (productIndex !== -1) {
-      // Product exists in the order, increment its quantity
-      const newOrder = { ...prevOrder };
-      newOrder.products[productIndex].productQuantity += 1;
-      return newOrder;
-    } else {
-      // Product does not exist in the order, add it with a quantity of 1
-      const newProduct = {
-        productId,
-        productName,
-        productPrice,
-        productQuantity: 1
-      };
-      return { ...prevOrder, products: [...prevOrder.products, newProduct] };
-    }
-  });
+      if (productIndex !== -1) {
+        // Product exists in the cart, increment its quantity
+        const newCart = { ...prevCart };
+        newCart.products[productIndex].productQuantity += 1;
+        return newCart;
+      } else {
+        // Product does not exist in the cart, add it with a quantity of 1
+        const newProduct = {
+          id,
+          productName,
+          productPrice,
+          productQuantity: 1
+        };
+        return { ...prevCart, products: [...prevCart.products, newProduct] };
+      }
+    });
 
-    let url = `${cart_url}/api/Cart/UpdateCart`;
+    let url = `${base_url}/api/Cart/UpdateCart`;
 
     fetch(url, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(order),
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cart),
     })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch((error) => {
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch((error) => {
         console.error('Error:', error);
-    });
-    
-};
+      });
+
+  };
 
   return (
     <Router>
       <div className="App">
         <Navbar onLogout={handleLogout} loggedIn={loggedIn} />
         <div className="page-container">
-        <Routes>
-          <Route path="/login" element={<LoginPage onLogin={handleLogin} 
-          loggedIn={loggedIn} wrongEmail = {wrongEmail} />} />
-          <Route path="/register" element={<RegisterPage onRegister={handleRegister} />} />
-          <Route path="/" element={loggedIn ? <ProductList products={products} handleAddToCart={handleAddToCart} /> : <Navigate to="/login" />} />
-          <Route path="/product/:id" element={loggedIn ? <ProductDetails products={products} onAddToCart={handleAddToCart} order={order} /> : <Navigate to="/login" />} />
-          <Route path="/cart" element={loggedIn ? <Cart order={order}  clearOrder={clearOrder} /> : <Navigate to="/login" />} />
-        </Routes>
+          <Routes>
+            <Route path="/login" element={<LoginPage onLogin={handleLogin}
+              loggedIn={loggedIn} wrongEmail={wrongEmail} />} />
+            <Route path="/register" element={<RegisterPage onRegister={handleRegister} />} />
+            <Route path="/" element={loggedIn ? <ProductList products={products} handleAddToCart={handleAddToCart} /> : <Navigate to="/login" />} />
+            <Route path="/product/:id" element={loggedIn ? <ProductDetails products={products} onAddToCart={handleAddToCart} cart={cart} /> : <Navigate to="/login" />} />
+            <Route path="/cart" element={loggedIn ? <Cart cart={cart} clearCart={clearCart} /> : <Navigate to="/login" />} />
+          </Routes>
         </div>
       </div>
     </Router>
