@@ -5,8 +5,15 @@ namespace Simpleecom.Shared.Models.User
 {
     public class User : Item
     {
+
         public User()
         {
+        }
+        public User(string email, string userId, Cart cart)
+        {
+            this.Email = email;
+            this.UserId = userId;
+            this.cart = cart;
         }
 
         public User(CreateUserDto userDto)
@@ -29,11 +36,10 @@ namespace Simpleecom.Shared.Models.User
                 if (value == null)
                 {
                     _cart = new Cart();
-                    { UserId = base.Id;}
+                    { UserId = this.Id; }
                 }
                 else
                 _cart = value;
-                _cart.UserId = base.Id;
             }
         }
         
