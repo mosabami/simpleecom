@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.css'; // Import the same CSS
 
+let homepage_pic = process.env.HOMEPAGE_PIC || 'https://simpleecom.blob.core.windows.net/awesomeeshop/eshop_homepage.png';
+
 const RegisterPage = ({ onRegister }) => {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const RegisterPage = ({ onRegister }) => {
   return (
     <div className="login-page">
       <h1>Register</h1> {/* Add the H1 element */}
-      <img src="https://simpleeconsa.blob.core.windows.net/simpleeshop/eshop_homepage.png" alt="Register" className="login-image" />
+      <img src={homepage_pic} alt="Register" className="login-image" />
       <div className="login-form">
         <form onSubmit={handleSubmit}>
           <label>

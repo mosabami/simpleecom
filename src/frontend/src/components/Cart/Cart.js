@@ -2,10 +2,9 @@
 import React from 'react';
 import './Cart.css'; // Import the CSS
 
-const Cart = ({ order, products, clearOrder }) => {
-    const total = Object.keys(order).reduce((sum, productId) => {
-        const product = products.find(product => product.id === productId);
-        return product ? sum + product.Price * order[productId] : sum;
+const Cart = ({ order,  clearOrder }) => {
+    let total = order.products.reduce((sum, product) => {
+        return sum + product.productPrice * product.productQuantity;
     }, 0);
 
     return (
@@ -21,14 +20,13 @@ const Cart = ({ order, products, clearOrder }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.keys(order).map(productId => {
-                        const product = products.find(product => product.id === productId);
+                    {Object.keys(order).map(product => {
                         return product ? (
-                            <tr key={productId}>
-                                <td>{product.Name}</td>
-                                <td>${product.Price}</td>
-                                <td>{order[productId]}</td>
-                                <td>${product.Price * order[productId]}</td>
+                            <tr key={product.productId}>
+                                <td>{product.productName}</td>
+                                <td>${product.productPrice}</td>
+                                <td>{product.productQuantity}</td>
+                                <td>${product.productPrice * product.productQuantity}</td>
                             </tr>
                         ) : null;
                     })}
