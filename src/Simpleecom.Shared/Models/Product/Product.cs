@@ -15,7 +15,7 @@ namespace Simpleecom.Shared.Models
             double Price,
             int Inventory,
             string Brand,
-            int productId
+            string Id
         )
         {
             this.Name = name;
@@ -24,7 +24,7 @@ namespace Simpleecom.Shared.Models
             this.Price = Price;
             this.Inventory = Inventory;
             this.Brand = Brand;
-            this.ProductId = productId;
+            this.Id = Id;
         }
 
         public Product(CreateProductDto product)
@@ -35,7 +35,7 @@ namespace Simpleecom.Shared.Models
             this.Price = product.Price;
             this.Inventory = product.Inventory;
             this.Brand = product.Brand;
-            this.ProductId = product.ProductId;
+            this.Id = product.Id;
         }
 
         public string Name { get; set; }
@@ -51,24 +51,24 @@ namespace Simpleecom.Shared.Models
         [Required]
         public string Brand { get; set; }
 
-        private int _productId;
-        public int ProductId
-        {
-            get
-            {
+        //private int _productId;
+        //public int ProductId
+        //{
+        //    get
+        //    {
 
-                return _productId;
-            }
-            set
-            {
-                _productId = value;
-                if (value > 0)
-                {
-                    base.Id = value.ToString();
-                }
+        //        return _productId;
+        //    }
+        //    set
+        //    {
+        //        _productId = value;
+        //        if (value > 0)
+        //        {
+        //            base.Id = value.ToString();
+        //        }
                 
-            }
-        }
+        //    }
+        //}
 
         public string GetPartitionKeyValue() => Brand;
 
@@ -78,6 +78,9 @@ namespace Simpleecom.Shared.Models
     {
         [Required]
         public string Name { get; set; }
+
+        [Required]
+        public string Id { get; set; }
 
         public string Description { get; set; } = string.Empty;
 
