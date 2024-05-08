@@ -16,8 +16,9 @@ namespace Simpleecom.Products.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             
             builder.Services.AddEndpointsApiExplorer();
+            builder.Configuration.AddEnvironmentVariables();
 
-            var ccs = builder.Configuration.GetValue<string>("CosmosConnectionString");
+            var ccs = builder.Configuration.GetValue<string>("COSMOS_CONNECTIONSTRING");
 
             builder.Services.Configure<RepositoryOptions>(builder.Configuration.GetSection("RepositoryOptions"));
             builder.Services.AddSingleton<IProductChangeFeedProcessor, ProductChangeFeedProcessor>();

@@ -42,7 +42,7 @@ namespace Simpleecom.Products.API.Controllers
                 return Conflict("Product already exists");
             if (product != null)
             {
-                var p = _repository.AddAsync(new Product(product));
+                var p = await _repository.AddAsync(new Product(product));
                 return Ok("Product");
             }
             return BadRequest();

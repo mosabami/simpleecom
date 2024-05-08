@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Simpleecom.Shared.Models;
 using Simpleecom.Shared.Models.User;
 using Simpleecom.Shared.Repositories;
 using System.Reflection.Metadata.Ecma335;

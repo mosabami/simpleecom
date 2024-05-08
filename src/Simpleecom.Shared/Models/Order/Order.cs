@@ -5,7 +5,7 @@ namespace Simpleecom.Shared.Models
 {
     public class Order : Item
     {
-       
+
         public Order()
         {
         }
@@ -30,9 +30,31 @@ namespace Simpleecom.Shared.Models
             this.OrderTotal = order.OrderTotal;
         }
 
+        public Order(Cart cart)
+        {
+            this.UserId = cart.UserId;
+            this.Products = GetOrderProducts(cart.Products);
+        }
+
         public List<OrderProduct> Products { get; set; }
 
-        public double OrderTotal { get; set; }
+        private double _orderTotal;
+        public double OrderTotal
+        {
+            get
+            {
+                double total = 0;
+                foreach (var product in Products)
+                {
+                    total += product.ProductPrice * product.ProductQuantity;
+                }
+                return total;
+            }
+            set
+            {
+                _orderTotal = value;
+            }
+        }
 
         [Required]
         public string UserId { get; set; }
@@ -44,8 +66,8 @@ namespace Simpleecom.Shared.Models
         {
             get
             {
-                
-               return base.Id;
+
+                return base.Id;
             }
             set
             {
@@ -60,11 +82,32 @@ namespace Simpleecom.Shared.Models
             }
         }
 
+        private List<OrderProduct> GetOrderProducts(List<CartProduct> cartProducts)
+        {
+            var items = new List<OrderProduct>();
+            foreach (var cartProduct in cartProducts)
+            {
+                items.Add(new OrderProduct(cartProduct));
+            }
+            return items;
+        }
+
     }
 
     public class OrderProduct
     {
-        
+        public OrderProduct()
+        {
+        }
+
+        public OrderProduct(CartProduct cartProduct)
+        {
+            this.ProductId = cartProduct.ProductId;
+            this.ProductName = cartProduct.ProductName;
+            this.ProductPrice = cartProduct.ProductPrice;
+            this.ProductQuantity = cartProduct.ProductQuantity;
+        }
+
         public string ProductId { get; set; }
         public string ProductName { get; set; }
         public double ProductPrice { get; set; }

@@ -3,17 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Simpleecom.Shared.Models
 {
-    public class Cart : Item
+    public class Cart 
     {
         public Cart()
         {
-        }
-
-        public Cart(List<CartProduct> products, bool isCompleted, string userId)
-        {
-            this.Products = products;
-            this.IsCompleted = isCompleted;
-            this.UserId = userId;
         }
 
         public Cart(CreateCartDto cart)
@@ -23,33 +16,12 @@ namespace Simpleecom.Shared.Models
             this.UserId = cart.UserId;      
         }
 
-        public List<CartProduct> Products { get; set;}
+        public List<CartProduct>? Products { get; set;}
 
         public bool IsCompleted { get; set; } = false;
 
         [Required]
         public string UserId { get; set; }
-
-        private string _cartId;
-        public string CartId
-        {
-            get
-            {
-
-                return base.Id;
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    _cartId = Guid.NewGuid().ToString();
-                }
-                else
-                {
-                    _cartId = value;
-                }
-            }
-        }
     }
 
     public class CartProduct
@@ -65,7 +37,7 @@ namespace Simpleecom.Shared.Models
     public class CreateCartDto
     {
         public List<CartProduct> Products { get; set; }
-        public bool IsCompleted { get; set; }
+        public bool IsCompleted { get; set; } = false;
         public string UserId { get; set; }
     }
 

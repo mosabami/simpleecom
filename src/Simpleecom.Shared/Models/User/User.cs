@@ -17,6 +17,27 @@ namespace Simpleecom.Shared.Models.User
         [Required]
         public string Email { get; set; }
 
+        private Cart _cart;
+        public Cart cart 
+        { 
+            get
+            {
+                return _cart;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    _cart = new Cart();
+                    { UserId = base.Id;}
+                }
+                else
+                _cart = value;
+                _cart.UserId = base.Id;
+            }
+        }
+        
+
         private string _userId;
         public string? UserId
         {
