@@ -14,12 +14,12 @@ try:
 except:
     storageBaseUrl = 'https://simpleecom.blob.core.windows.net/awesomeeshop'
 try:
-    apiBaseUrl =  os.environ['API_BASE_URL']
+    productsBaseUrl =  os.environ['PRODUCTS_BASE_URL']
 except:
-    apiBaseUrl = ''
+    productsBaseUrl = ''
 
 print(f'storageBaseUrl: {storageBaseUrl}')
-print("apiBaseUrl: ", apiBaseUrl)
+print("productsBaseUrl: ", productsBaseUrl)
 
 app = Flask(__name__)
 
@@ -32,7 +32,7 @@ def send_data():
     """Check to see if the product data exists in memory. If it doesn't, 
     generate the data using the GenerateProductsData class, and then send the data to the API."""
     print(f'storageBaseUrl: {storageBaseUrl}')
-    print("apiBaseUrl: ", apiBaseUrl)
+    print("apiBaseUrl: ", productsBaseUrl)
     if not os.path.exists('productsData.json'):
         GenerateProductsData(storageBaseUrl).generate_products_data()
     with open('productsData.json') as f:
@@ -40,10 +40,10 @@ def send_data():
 
     for item in data:
         print(f'Creating product with ID {item["id"]}')
-        response = requests.post(f'{apiBaseUrl}/api/Product/CreateProduct', json=item)
+        response = requests.post(f'{productsBaseUrl}/api/Product/CreateProduct', json=item)
         if response.status_code == 409:
             print(f'Product with ID {item["id"]} already exists. Updating product instead.')
-            response = requests.put(f'{apiBaseUrl}/api/Product/UpdateProduct', json=item)
+            response = requests.put(f'{productsBaseUrl}/api/Product/UpdateProduct', json=item)
         print(f'Response status code: {response.status_code}')
     return 'Data uploaded', 200
 

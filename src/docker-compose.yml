@@ -18,10 +18,10 @@ services:
   dataprep:
     image: ${DOCKER_REGISTRY-}datapreparer
     ports:
-      - '5001:5000'
+      - '5000:5000'
     environment:
       - STORAGE_BASE_URL=https://simpleecom.blob.core.windows.net/awesomeeshop
-      - API_BASE_URL=http://products
+      - PRODUCTS_BASE_URL=http://products
     build:
       context: ./prepdata
       dockerfile: Dockerfile
