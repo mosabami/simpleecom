@@ -1,17 +1,20 @@
 # Use an official Python runtime as a parent image
 FROM python:3.12-slim
 
-# Set the working directory in the container to /app
-WORKDIR /app
+#Set the working directory in the Docker container
+WORKDIR /code
+#Copy the dependencies file to the working directory
+COPY requirements.txt .
+RUN apt-get update ##[edited]
+RUN apt-get install ffmpeg libsm6 libxext6  -y
 
-# Add the current directory contents into the container at /app
-ADD . /app
+RUN apt-get update 
+# && apt-get install -y python3-opencv
+#Install the dependencies
+RUN pip install -r requirements.txt
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Make port 5000 available to the world outside this container
+#Copy the Flask app code to the working directory
+COPY . .
+#Run the container
 EXPOSE 5000
-
-# Run app.py when the container launches
-CMD ["python", "app.py"]
+CMD [ "python", "./app.py" ]
