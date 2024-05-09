@@ -112,25 +112,6 @@ const App = () =>  {
     setLoggedIn(false);
   };
 
-
-  const clearCart = () => {
-    setCart({});
-    let url = `${base_url}/api/Cart/DeleteCart`;
-
-    fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId: userID }), // replace userID with the actual userID
-    })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  };
-
   // This function handles adding a product to the cart.
   const handleUpdateCart = (productId, productName, productPrice) => {
     if (!cart) {
