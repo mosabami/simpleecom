@@ -2,7 +2,7 @@
 import React from 'react';
 import './Cart.css'; // Import the CSS
 
-const Cart = ({ cart,  clearCart }) => {
+const Cart = ({ cart,  onPurchase }) => {
     let total = cart.products.reduce((sum, product) => {
         return sum + product.productPrice * product.productQuantity;
     }, 0);
@@ -20,13 +20,13 @@ const Cart = ({ cart,  clearCart }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.keys(cart).map(product => {
+                    {cart.products.map(product => {
                         return product ? (
                             <tr key={product.id}>
                                 <td>{product.productName}</td>
                                 <td>${product.productPrice}</td>
                                 <td>{product.productQuantity}</td>
-                                <td>${product.productPrice * product.productQuantity}</td>
+                                <td>${(product.productPrice * product.productQuantity).toFixed(2)}</td>
                             </tr>
                         ) : null;
                     })}
@@ -38,7 +38,7 @@ const Cart = ({ cart,  clearCart }) => {
                     </tr>
                 </tfoot>
             </table>
-            <button onClick={clearCart} className="clear-cart-button">Place Order</button> {/* Add the CSS class */}
+            <button onClick={onPurchase} className="clear-cart-button">Place Order</button> {/* Add the CSS class */}
         </div>
     );
 };
