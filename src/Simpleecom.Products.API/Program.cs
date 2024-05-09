@@ -32,11 +32,7 @@ namespace Simpleecom.Products.API
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy(SimpleecomCorsPolicy,
-                                      policy =>
-                                      {
-                                          policy.AllowAnyOrigin();
-                                      });
+                options.AddPolicy(SimpleecomCorsPolicy, policy =>{ policy.AllowAnyOrigin(); });
             });
 
             var app = builder.Build();

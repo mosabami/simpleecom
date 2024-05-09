@@ -14,7 +14,7 @@ namespace Simpleecom.Carts.API.Controllers
 
         public CartController
             (
-            CosmosDBRepository<SimpleecomUser> repository, 
+            CosmosDBRepository<SimpleecomUser> repository,
             CosmosDBRepository<Order> orderRepository)
         {
             _repository = repository;
@@ -53,19 +53,21 @@ namespace Simpleecom.Carts.API.Controllers
                 if (user == null)
                     return NotFound();
                 user.cart = cart;
-                return Ok( await _repository.UpsertAsync(user));
+                return Ok(await _repository.UpsertAsync(user));
             }
             return BadRequest();
         }
 
-        
+
         [HttpDelete]
         public async Task<IActionResult> DeleteCartAsync(string userId)
         {
             var user = await _repository.GetItemsAsync(x => x.Id == userId);
             var u = user.FirstOrDefault();
-            u.cart =new Cart();
+            u.cart = new Cart();
             return Ok(await _repository.UpsertAsync(u));
         }
+
+        
     }
 }

@@ -54,7 +54,8 @@ namespace Simpleecom.Orders.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteOrderAsync(string orderId)
         {
-            await _repository.DeleteAsync(orderId);
+            var order = await _repository.GetItemAsync(x => x.OrderId == orderId);
+            await _repository.DeleteAsync(orderId, order.GetPartitionKeyValue());
             return Ok("Order Deleted");
         }
     }

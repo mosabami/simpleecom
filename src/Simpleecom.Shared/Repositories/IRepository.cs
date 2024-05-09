@@ -8,7 +8,7 @@ namespace Simpleecom.Shared.Repositories
         Task<IEnumerable<T>> GetByQueryAsync(QueryDefinition queryDefinition);
         Task<T> AddAsync(T item);
         Task UpdateAsync(string id, T item, string partitionKeyValue);
-        Task DeleteAsync(string id);
+        Task DeleteAsync(string id, string partitionKeyValue);
         Task<IEnumerable<T>> GetItemsAsync(Func<T, bool> predicate);
         Task<T> UpsertAsync(T item);
     }

@@ -2,7 +2,6 @@
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Simpleecom.Shared.Constants;
 using Simpleecom.Shared.Models;
 using Simpleecom.Shared.Options;
 using Simpleecom.Shared.Repositories;
@@ -72,13 +71,6 @@ namespace Simpleecom.Shared.Processors
         {
             foreach (var cart in changes)
             { 
-                //if(cart.Status == CartStatus.Completed)
-                //{
-                //    var order = new Order(cart.Total,OrderStatus.New,cart.UserId,cart.Products,new Guid().ToString(),false);
-                //    await _repository.AddAsync(order);
-                //    Console.WriteLine($"Completed item: {cart}");
-                //    continue;
-                //}
                 Console.WriteLine($"Changed item: {cart}");
             }
             return;

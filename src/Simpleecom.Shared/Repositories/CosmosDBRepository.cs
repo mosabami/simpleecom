@@ -94,10 +94,10 @@ namespace Simpleecom.Shared.Repositories
             return response.Resource;
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(string id, string partitionKeyValue)
         {
             _container = GetCosmosContainer();
-            await _container.DeleteItemAsync<T>(id, new PartitionKey(id));
+            await _container.DeleteItemAsync<T>(id, new PartitionKey(partitionKeyValue));
         }
 
         public async Task<IEnumerable<T>> GetItemsAsync(Func<T, bool> predicate)

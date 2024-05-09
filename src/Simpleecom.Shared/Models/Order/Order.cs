@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing.Drawing2D;
 
 namespace Simpleecom.Shared.Models
 {
@@ -8,19 +9,6 @@ namespace Simpleecom.Shared.Models
 
         public Order()
         {
-        }
-
-        public Order(
-            string UserId,
-            List<OrderProduct> products,
-            string OrderId,
-            bool isCompleted = false
-        )
-        {
-            this.UserId = UserId;
-            this.Products = products;
-            this.IsCompleted = isCompleted;
-            this.OrderId = OrderId;
         }
 
         public Order(CreateOrderDto order)
@@ -59,8 +47,6 @@ namespace Simpleecom.Shared.Models
         [Required]
         public string UserId { get; set; }
 
-        public bool IsCompleted { get; set; } = false;
-
         private string _orderId;
         public string OrderId
         {
@@ -91,6 +77,8 @@ namespace Simpleecom.Shared.Models
             }
             return items;
         }
+
+        public string GetPartitionKeyValue() => UserId;
 
     }
 

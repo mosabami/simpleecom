@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Simpleecom.Shared.Models;
+using Simpleecom.Shared.Models.User;
 using Simpleecom.Shared.Repositories;
 
 namespace Simpleecom.Products.API.Controllers
@@ -9,6 +10,7 @@ namespace Simpleecom.Products.API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly CosmosDBRepository<Product> _repository;
+        private readonly CosmosDBRepository<User> _userRepository;
 
         public ProductController(CosmosDBRepository<Product> repository)
         {
@@ -75,8 +77,21 @@ namespace Simpleecom.Products.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteProductAsync(string id)
         {
-            await _repository.DeleteAsync(id);
-            return Ok("Product");
+            var product = await _repository.GetItemAsync(x => x.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            product.Active = false;
+            await _repository.UpsertAsync(product);
+
+            return Ok();
+
+           
         }
+
+        
     }
 }

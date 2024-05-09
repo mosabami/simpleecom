@@ -8,25 +8,6 @@ namespace Simpleecom.Shared.Models
         {
         }
 
-        public Product(
-            string name,
-            string Description,
-            string photoURL,
-            double Price,
-            int Inventory,
-            string Brand,
-            string Id
-        )
-        {
-            this.Name = name;
-            this.Description = Description;
-            this.PhotoURL = photoURL;
-            this.Price = Price;
-            this.Inventory = Inventory;
-            this.Brand = Brand;
-            this.Id = Id;
-        }
-
         public Product(CreateProductDto product)
         {
             this.Name = product.Name;
@@ -47,6 +28,8 @@ namespace Simpleecom.Shared.Models
         public double Price { get; set; }
 
         public int Inventory { get; set; }
+
+        public bool Active { get; set; }
 
         [Required]
         public string Brand { get; set; }

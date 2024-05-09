@@ -2,7 +2,6 @@
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Simpleecom.Shared.Constants;
 using Simpleecom.Shared.Models;
 using Simpleecom.Shared.Options;
 using Simpleecom.Shared.Repositories;
@@ -72,17 +71,6 @@ namespace Simpleecom.Shared.Processors
         {
             foreach (var order in changes)
             {
-                //if (order.Status == OrderStatus.Completed)
-                //{
-                //    foreach (var item in order.Products)
-                //    {
-                //        var product = await _repository.GetByIdAsync(item.Id, _options.PartitionKey);
-                //        product.Inventory -= item.Inventory;
-                //        await _repository.UpdateAsync(product.Id, product, product.Brand);
-                //    }
-                //    Console.WriteLine($"Order {order.Id} is complete");
-                //}
-          
                 Console.WriteLine($"Changed item: {order}");
             }
         }

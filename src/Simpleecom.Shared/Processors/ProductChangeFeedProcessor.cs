@@ -1,8 +1,11 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Simpleecom.Shared.Models;
 using Simpleecom.Shared.Options;
+using Simpleecom.Shared.Repositories;
+using SimpleecomUser = Simpleecom.Shared.Models.User.User;
 
 namespace Simpleecom.Shared.Processors
 {
@@ -15,10 +18,21 @@ namespace Simpleecom.Shared.Processors
     {
         private readonly RepositoryOptions _options;
         private static Random random = new Random();
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public ProductChangeFeedProcessor(IOptions<RepositoryOptions> options)
+
+        private readonly CosmosDBRepository<SimpleecomUser> _userRepository;
+        private readonly CosmosDBRepository<Product> _productRepository;
+
+
+        public ProductChangeFeedProcessor(IOptions<RepositoryOptions> options, 
+            IServiceScopeFactory scopeFactory)
         {
             _options = options.Value;
+            _scopeFactory = scopeFactory;
+            _userRepository = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<CosmosDBRepository<SimpleecomUser>>();
+            _productRepository = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<CosmosDBRepository<Product>>();
+
         }
 
         public async Task InitializeAsync()
@@ -64,6 +78,20 @@ namespace Simpleecom.Shared.Processors
         {
             foreach (var product in changes)
             {
+                if(product.Active == false)
+                {
+                    var users = await _userRepository
+                    .GetItemsAsync(x => x?.cart?.Products.Where(p => p.ProductId == product.Id)
+                    .Count() > 1);
+                  
+                        foreach (var user in users)
+                        {
+                            user.cart.Products.Remove(user.cart.Products.FirstOrDefault(x => x.ProductId == product.Id));
+                            await _userRepository.UpsertAsync(user);
+                        }
+                    var pk = product.GetPartitionKeyValue();
+                    await _productRepository.DeleteAsync(product.Id, pk);
+                }
                 Console.WriteLine($"Changed item: {product}");
             }
         }
