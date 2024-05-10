@@ -27,10 +27,11 @@ services:
       dockerfile: Dockerfile
   frontend:
     ports:
-      - '3000:3000'
+      - '3001:3000'
     environment:
       - REACT_APP_HOMEPAGE_PIC=https://simpleecom.blob.core.windows.net/awesomeeshop/eshop_homepage.png
-      - REACT_APP_API_BASE_URL=
+      - REACT_APP_API_BASE_URL=none
+      - REACT_APP_PULL_BRAND_FROM_DATABASE=false
 
     build:
       context: ./frontend
