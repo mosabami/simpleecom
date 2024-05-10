@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Product = ({ product, onAddToCart, handleBrandLinkClick }) => {
+const Product = ({ product, onAddToCart, onBrandLinkClick, onRemoveFromCart, cart }) => {
   if (!product) {
     console.error('Product is undefined');
     return <div>Product is undefined</div>;
@@ -22,11 +22,11 @@ return (
     <div>
       <img src={product.photoURL} alt={productName} style={{ width: '100%', height: 'auto' }} />
       <h2><Link to={`/product/${productId}`}>{productName}</Link></h2>
-      {/* <h3><Link to="#" onClick={() => handleBrandLinkClick(brand)}>{brand}</Link></h3> */}
-      <h3><Link to={`/brand/${encodeURIComponent(brand)}`} onClick={() => handleBrandLinkClick(brand)}>{brand}</Link></h3>
+      <h3><strong>Brand: </strong><Link to={`/brand/${encodeURIComponent(brand)}`} onClick={() => onBrandLinkClick(brand)}>{brand}</Link></h3>
       <p>{truncatedDescription}...</p>
       <p>${productPrice}</p>
-      <button onClick={() => onAddToCart(productId, productName, productPrice)}>Add to Cart</button>
+      <button style={{marginBottom: '10px'}} onClick={() => onAddToCart(productId, productName, productPrice)}>Add to Cart</button>
+      <button style={{backgroundColor: '#E46A4C'}} onClick={() => onRemoveFromCart(productId, cart)}>Remove from cart</button>
     </div>
   )
 );

@@ -7,13 +7,19 @@ let homepage_pic = process.env.REACT_APP_HOMEPAGE_PIC || 'https://simpleecom.blo
 
 const RegisterPage = ({ onRegister }) => {
   const [email, setEmail] = useState('');
+  const [regFail, setregFail] = useState(false); // Add this line
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    onRegister(email);
-    navigate('/login'); // Navigate back to the login page
-  };
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  let reg = await onRegister(email);
+  console.log("reg", reg);
+  if (reg) {
+    navigate('/login');
+  } else {
+    setregFail(true);
+  }
+};
 
   return (
     <div className="login-page">
@@ -29,6 +35,9 @@ const RegisterPage = ({ onRegister }) => {
             <button type="submit">Register</button>
           </div>
         </form>
+        <div>
+        {regFail && <p style={{ color: 'red' }}>Email already registered or registration failed</p>}
+        </div>
       </div>
     </div>
   );
