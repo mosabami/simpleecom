@@ -25,7 +25,7 @@ namespace Simpleecom.Shared.Processors
         private readonly CosmosDBRepository<Product> _productRepository;
 
 
-        public ProductChangeFeedProcessor(IOptions<RepositoryOptions> options, 
+        public ProductChangeFeedProcessor(IOptions<RepositoryOptions> options,
             IServiceScopeFactory scopeFactory)
         {
             _options = options.Value;
@@ -78,17 +78,16 @@ namespace Simpleecom.Shared.Processors
         {
             foreach (var product in changes)
             {
-                if(product.Active == false)
+                if (product.Active == false)
                 {
-                    var users = await _userRepository
-                    .GetItemsAsync(x => x?.cart?.Products.Where(p => p.ProductId == product.Id)
-                    .Count() > 1);
-                  
-                        foreach (var user in users)
-                        {
-                            user.cart.Products.Remove(user.cart.Products.FirstOrDefault(x => x.ProductId == product.Id));
-                            await _userRepository.UpsertAsync(user);
-                        }
+                    var users = await _userRepository.GetItemsAsync(x => x?.cart?.Products
+                    .Where(cp => cp.ProductId == product.Id).Count() >= 1);
+
+                    foreach (var user in users)
+                    {
+                        user.cart.Products.Remove(user.cart.Products.FirstOrDefault(x => x.ProductId == product.Id));
+                        await _userRepository.UpsertAsync(user);
+                    }
                     var pk = product.GetPartitionKeyValue();
                     await _productRepository.DeleteAsync(product.Id, pk);
                 }

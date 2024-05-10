@@ -28,7 +28,7 @@ namespace Simpleecom.Shared.Models.User
         public string Email { get; set; }
 
         private Cart _cart;
-        public Cart cart 
+        public Cart? cart 
         { 
             get
             {

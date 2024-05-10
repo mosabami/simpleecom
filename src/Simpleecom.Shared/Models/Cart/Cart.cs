@@ -16,7 +16,7 @@ namespace Simpleecom.Shared.Models
             this.UserId = cart.UserId;      
         }
 
-        public List<CartProduct> Products { get; set;} = new List<CartProduct>();
+        public List<CartProduct>? Products { get; set;} = new List<CartProduct>();
 
         public bool IsCompleted { get; set; } = false;
 
