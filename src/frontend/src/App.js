@@ -12,18 +12,17 @@ import placeholderCart from './placeholderCart.json';
 let base_url = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8083';
 // If base_url is 'none', set it to an empty string. workaround to make it work with passing env variables from docker-compose
 base_url = base_url === 'none' ? '' : base_url; 
-let pull_brand_from_database = process.env.REACT_APP_PULL_BRAND_FROM_DATABASE || 'true';
 console.log(`base_url: ${base_url}`);
-console.log(`pull_brand_from_database: ${pull_brand_from_database}`);
+
 
 
 const App = () =>  {
   const [loggedIn, setLoggedIn] = useState(false);
   const [wrongEmail, setwrongEmail] = useState(false);
   const [cart, setCart] = useState(false);
-  const [userID, setUserID] = useState("");
+  // const [userID, setUserID] = useState("");
   const [products, setProducts] = useState([]);
-  const [user, setUserData] = useState({});
+  // const [user, setUserData] = useState({});
   const [brand, setBrand] = useState('all');
   const [brandData, setBrandData] = useState([]);
   
@@ -51,9 +50,9 @@ const App = () =>  {
         throw new Error('userData is undefined');
       }
       setLoggedIn(true);
-      setUserID(userData["id"]);
+      // setUserID(userData["id"]);
       setwrongEmail(false);
-      setUserData(userData);
+      // setUserData(userData);
       // console.log('userData:', userData);
       let productResponse = await fetch(`${base_url}/api/Product/GetProducts`)
         .then(response => response.json())
@@ -177,7 +176,7 @@ const handleRemoveFromCart = (productId, cart) => {
 
 const handleDeleteProduct = async (productId) => {
   let url = `${base_url}/api/Product/DeleteProduct?id=${productId}`;
-  let decision = confirm("Are you sure you want to delete this product from the database not just your cart?");
+  let decision = window.confirm("Are you sure you want to delete this product from the database not just your cart?");
   if (decision) {
     try {
       let response = await fetch(url, { method: 'DELETE' });
@@ -217,7 +216,7 @@ const purchase = () => {
     let newCart = { ...cart };
     newCart.orderTotal = newCart.products.reduce((sum, product) => {
       return sum + product.productPrice * product.productQuantity;
-    }, 0);
+    }, 0).toFixed(2);
     let url = `${base_url}/api/Orders/CreateOrder`;
     fetch(url, {
       method: 'POST',
@@ -249,47 +248,45 @@ const purchase = () => {
 
 useEffect(() => {
   let url = `${base_url}/api/Cart/UpdateCart`;
-
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(cart),
-  })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}, [cart]); // This will run whenever `cart` changes
-
-// useEffect(() => {
-//   let data = [...products];
-//   if (brand !== "all") {
-//     data = data.filter(data => data.brand === brand);
-//   }
-//   setProducts(data);
-// }, [brand]); // This will run whenever `brand` changes
-
-useEffect(() => {
-  if (pull_brand_from_database === 'true') {
-    let url = `${base_url}/api/Product/GetProductsByBrand?brand=${brand}`;
-    fetch(url)
+  if (!cart) {
+    console.log('Cart is undefined');
+    return;
+  }
+  if (loggedIn) {
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cart),
+    })
       .then(response => response.json())
-      .then(data => {
-        setProducts(data);
-      })
+      .then(data => console.log(data))
       .catch((error) => {
         console.error('Error:', error);
       });
   }
-  else {
+}, [cart, loggedIn]); // This will run whenever `cart` changes
 
-  let data = products.filter(product => product.brand === brand);
-  setBrandData(data);
-  }
-}, [brand]); // This will run whenever `cart` changes
+useEffect(() => {
+  let url = `${base_url}/api/Product/GetProductsByBrand?brand=${brand}`;
+  fetch(url)
+    .then(response => {
+      if (response.status !== 200) {
+        console.error('Network response was not ok. Pulling data from local state');
+        return products.filter(product => product.brand === brand);
+      }
+      else {
+        return response.json();
+      }
+    })
+    .then(data => {
+      setBrandData(data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+}, [brand, products]); // This will run whenever `brand` or `products` changes
 
 // useEffect(() => {
 //   if (loggedIn) {
@@ -306,9 +303,9 @@ useEffect(() => {
               loggedIn={loggedIn} wrongEmail={wrongEmail} />} />
             <Route path="/register" element={<RegisterPage onRegister={handleRegister}  />} />
             <Route path="/" element={loggedIn ? <ProductList products={products} onAddToCart={handleUpdateCart} onBrandLinkClick={handleBrandLinkClick} onRemoveFromCart={handleRemoveFromCart} cart={cart} /> : <Navigate to="/login" />} />
-            <Route path="/product/:id" element={loggedIn ? <ProductDetails products={products} onAddToCart={handleUpdateCart} onBrandLinkClick={handleBrandLinkClick} onRemoveFromCart={handleRemoveFromCart} cart={cart} /> : <Navigate to="/login" />} />
+            <Route path="/product/:id" element={loggedIn ? <ProductDetails products={products} onAddToCart={handleUpdateCart} onBrandLinkClick={handleBrandLinkClick} onRemoveFromCart={handleRemoveFromCart} onDeleteProduct={handleDeleteProduct} cart={cart} /> : <Navigate to="/login" />} />
             <Route path="/brand/*" element={loggedIn ?  <ProductList products={brandData} onAddToCart={handleUpdateCart} handleBrandLinkClick={handleBrandLinkClick} /> : <Navigate to="/login" />} />
-            <Route path="/cart" element={loggedIn ? <Cart cart={cart} onPurchase={purchase} /> : <Navigate to="/login" />} />
+            <Route path="/cart" element={loggedIn ? <Cart cart={cart} onPurchase={purchase} onRemoveFromCart={handleRemoveFromCart} /> : <Navigate to="/login" />} />
           </Routes>
         </div>
       </div>
