@@ -17,8 +17,9 @@ namespace Simpleecom.Orders.API
 
             builder.Services.AddEndpointsApiExplorer();
 
-            builder.Services.Configure<CosmosDbOptions>(builder.Configuration.GetSection("CosmosDbOptions"));
             builder.Configuration.AddEnvironmentVariables();
+            builder.Services.Configure<CosmosDbOptions>(builder.Configuration.GetSection("CosmosDbOptions"));
+            
 
             builder.Services.AddSingleton<IOrderChangeFeedProcessor, OrderChangeFeedProcessor>();
 

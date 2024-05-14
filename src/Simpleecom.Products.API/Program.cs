@@ -20,7 +20,6 @@ namespace Simpleecom.Products.API
             var ev = System.Environment.GetEnvironmentVariables();
 
             builder.Configuration.AddEnvironmentVariables();
-
             builder.Services.Configure<CosmosDbOptions>(builder.Configuration.GetSection("CosmosDbOptions"));
 
             builder.Services.AddSingleton<IProductChangeFeedProcessor, ProductChangeFeedProcessor>();
