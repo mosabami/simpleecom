@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using Azure.Identity;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Options;
 using Simpleecom.Shared.Models;
@@ -11,10 +12,10 @@ namespace Simpleecom.Shared.Repositories
         where T : Item
     {
         private Container _container;
-        private readonly RepositoryOptions _options;
-        private  CosmosClient _cosmosClient;
+        private readonly CosmosDbOptions _options;
+        private CosmosClient _cosmosClient;
 
-        public CosmosDBRepository(IOptions<RepositoryOptions> options)
+        public CosmosDBRepository(IOptions<CosmosDbOptions> options)
         {
             _options = options.Value;
             _cosmosClient = GetCosmosClient<T>();
@@ -22,23 +23,23 @@ namespace Simpleecom.Shared.Repositories
 
         private CosmosClient GetCosmosClient<T>()
         {
-            _cosmosClient = new CosmosClientBuilder(_options.ConnectionString)
-                 .WithSerializerOptions(
-                                    new CosmosSerializationOptions
-                                    {
-                                        PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                                    }
-                                                   )
-                 .Build();
-
-            // Create container on startup if it doesn't exist
-            //Type t = typeof(T);
-            //var containerName = GetContainerName<T>();
-
-                //var container = cosmosClient
-                //     .GetDatabase(_options.DatabaseId)
-                //     .CreateContainerIfNotExistsAsync(GetContainerName<T>(), _options.PartitionKey)
-                //     .Result;
+            
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                _cosmosClient = new CosmosClientBuilder(_options.CONNECTION_STRING)
+                           .WithSerializerOptions(new CosmosSerializationOptions
+                           {
+                               PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                           }).Build();
+            }
+            else
+            {
+                _cosmosClient = new CosmosClientBuilder(_options.COSMOS_ENDPOINT, new DefaultAzureCredential())
+                           .WithSerializerOptions(new CosmosSerializationOptions
+                           {
+                               PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                           }).Build();
+            }
 
             return _cosmosClient;
         }
@@ -46,7 +47,7 @@ namespace Simpleecom.Shared.Repositories
         private Container GetCosmosContainer()
         {
             var containerName = GetContainerName<T>();
-            var container = _cosmosClient.GetContainer(_options.DatabaseId, containerName);
+            var container = _cosmosClient.GetContainer(_options.DATABASE_ID, containerName);
             return container;
         }
 

@@ -39,6 +39,11 @@ services:
     image: ${DOCKER_REGISTRY-}simpleecomproductsapi
     ports:
       - '8084:80'
+    environment:
+      - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
+      - COSMOSDBOPTIONS__PARTITION_KEY=/brand
+      - COSMOSDBOPTIONS__CONTAINER_NAME=Products
+      - COSMOSDBOPTIONS__COSMOS_ENDPOINT=
     build:
       context: .
       dockerfile: Simpleecom.Products.API/Dockerfile
@@ -47,6 +52,11 @@ services:
     image: ${DOCKER_REGISTRY-}simpleecomcartsapi
     ports:
       - '8085:80'
+    environment:
+      - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
+      - COSMOSDBOPTIONS__PARTITION_KEY=/userId
+      - COSMOSDBOPTIONS__CONTAINER_NAME=Carts
+      - COSMOSDBOPTIONS__COSMOS_ENDPOINT=
     build:
       context: .
       dockerfile: Simpleecom.Cart.API/Dockerfile
@@ -55,6 +65,11 @@ services:
     image: ${DOCKER_REGISTRY-}simpleecomordersapi
     ports:
       - '8082:80'
+    environment:
+      - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
+      - COSMOSDBOPTIONS__PARTITION_KEY=/userId
+      - COSMOSDBOPTIONS__CONTAINER_NAME=Orders
+      - COSMOSDBOPTIONS__COSMOS_ENDPOINT=
     build:
       context: .
       dockerfile: Simpleecom.Orders.API/Simpleecom.Orders.API/Dockerfile
@@ -63,6 +78,11 @@ services:
     image: ${DOCKER_REGISTRY-}simpleecomauth
     ports:
       - '8083:80'
+    environment:
+      - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
+      - COSMOSDBOPTIONS__PARTITION_KEY=/email
+      - COSMOSDBOPTIONS__CONTAINER_NAME=Users
+      - COSMOSDBOPTIONS__COSMOS_ENDPOINT=
     build:
       context: .
       dockerfile: Simpleecom.Auth/Dockerfile

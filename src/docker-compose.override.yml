@@ -5,6 +5,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=80
+      - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
+      - COSMOSDBOPTIONS__PARTITION_KEY=/brand
+      - COSMOSDBOPTIONS__CONTAINER_NAME=Products
     ports:
       - '8084:80'
     volumes:
@@ -15,6 +18,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=80
+      - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
+      - COSMOSDBOPTIONS__PARTITION_KEY=/userId
+      - COSMOSDBOPTIONS__CONTAINER_NAME=Carts
     ports:
       - '8085:80'
     tty: true
@@ -26,6 +32,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=80
+      - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
+      - COSMOSDBOPTIONS__PARTITION_KEY=/userId
+      - COSMOSDBOPTIONS__CONTAINER_NAME=Orders
     ports:
       - '8082:80'
     volumes:
@@ -36,6 +45,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=80
+      - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
+      - COSMOSDBOPTIONS__PARTITION_KEY=/email
+      - COSMOSDBOPTIONS__CONTAINER_NAME=Users
     ports:
       - '8083:80'
     volumes:

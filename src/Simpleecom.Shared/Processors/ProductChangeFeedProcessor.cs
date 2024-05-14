@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using Azure.Identity;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -16,16 +17,18 @@ namespace Simpleecom.Shared.Processors
 
     public class ProductChangeFeedProcessor : IProductChangeFeedProcessor
     {
-        private readonly RepositoryOptions _options;
+        private readonly CosmosDbOptions _options;
         private static Random random = new Random();
         private readonly IServiceScopeFactory _scopeFactory;
 
 
         private readonly CosmosDBRepository<SimpleecomUser> _userRepository;
         private readonly CosmosDBRepository<Product> _productRepository;
+        private CosmosClient _cosmosClient;
 
 
-        public ProductChangeFeedProcessor(IOptions<RepositoryOptions> options,
+
+        public ProductChangeFeedProcessor(IOptions<CosmosDbOptions> options,
             IServiceScopeFactory scopeFactory)
         {
             _options = options.Value;
@@ -37,25 +40,16 @@ namespace Simpleecom.Shared.Processors
 
         public async Task InitializeAsync()
         {
-            string databaseName = _options.DatabaseId;
-            string containerName = _options.ContainerName;
+            string databaseName = _options.DATABASE_ID;
+            string containerName = _options.CONTAINER_NAME;
 
-            var cosmosClient = new CosmosClientBuilder(_options.ConnectionString)
-                .WithSerializerOptions(
-                    new CosmosSerializationOptions
-                    {
-                        PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                    }
-                )
-                .Build();
+            _cosmosClient = GetCosmosClient();
 
-            //return new CosmosClient(configuration["CosmosDbEndpoint"], new DefaultAzureCredential());
-
-            string leaseContainerName = $"Lease" + _options.ContainerName;
-            Database database = await cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName);
+            string leaseContainerName = $"Lease" + _options.CONTAINER_NAME;
+            Database database = await _cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName);
             Container container = await database.CreateContainerIfNotExistsAsync(
                 containerName,
-                _options.PartitionKey
+                _options.PARTITION_KEY
             );
             Container leaseContainer = await database.CreateContainerIfNotExistsAsync(
                 leaseContainerName,
@@ -85,7 +79,7 @@ namespace Simpleecom.Shared.Processors
 
                     foreach (var user in users)
                     {
-                        user.cart.Products.Remove(user.cart.Products.FirstOrDefault(x => x.ProductId == product.Id));
+                        user?.cart?.Products?.Remove(user.cart.Products.FirstOrDefault(x => x.ProductId == product.Id));
                         await _userRepository.UpsertAsync(user);
                     }
                     var pk = product.GetPartitionKeyValue();
@@ -101,6 +95,28 @@ namespace Simpleecom.Shared.Processors
             return new string(
                 Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray()
             );
+        }
+
+        private CosmosClient GetCosmosClient()
+        {
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                _cosmosClient = new CosmosClientBuilder(_options.CONNECTION_STRING)
+                           .WithSerializerOptions(new CosmosSerializationOptions
+                           {
+                               PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                           }).Build();
+            }
+            else
+            {
+                _cosmosClient = new CosmosClientBuilder(_options.COSMOS_ENDPOINT, new DefaultAzureCredential())
+                           .WithSerializerOptions(new CosmosSerializationOptions
+                           {
+                               PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                           }).Build();
+            }
+
+            return _cosmosClient;
         }
     }
 }

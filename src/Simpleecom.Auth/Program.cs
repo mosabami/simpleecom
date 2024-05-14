@@ -18,7 +18,9 @@ namespace Simpleecom.Auth
 
             builder.Services.AddEndpointsApiExplorer();
 
-            builder.Services.Configure<RepositoryOptions>(builder.Configuration.GetSection("RepositoryOptions"));
+            builder.Services.Configure<CosmosDbOptions>(builder.Configuration.GetSection("CosmosDbOptions"));
+            builder.Configuration.AddEnvironmentVariables();
+
             builder.Services.AddSingleton<IProductChangeFeedProcessor, ProductChangeFeedProcessor>();
 
             builder.Services.AddScoped(typeof(CosmosDBRepository<>));
