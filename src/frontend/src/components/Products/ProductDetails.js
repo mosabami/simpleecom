@@ -3,7 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import './ProductDetails.css';
 
-const ProductDetails = ({ products, onAddToCart, cart }) => {
+const ProductDetails = ({ products, onAddToCart, onDeleteProduct, onRemoveFromCart, cart }) => {
   const { id } = useParams();
   const product = products.find(product => String(product.id) === id);
   console.log('product in details:', product);
@@ -28,7 +28,8 @@ const ProductDetails = ({ products, onAddToCart, cart }) => {
         <p><strong>Price:</strong>${product.price}</p>
         <p><strong>Cart quantity:</strong> {productQuantity || 0}</p>
         <button onClick={() => onAddToCart(productId, productName, productPrice)}>Add to Cart</button>
-        <button style={{backgroundColor: 'red'}} onClick={() => onAddToCart(productId, productName, productPrice)}>Del Product from DB</button>
+        <button style={{backgroundColor: '#E46A4C'}} onClick={() => onRemoveFromCart(productId, cart)}>Remove from cart</button>
+        <button style={{backgroundColor: 'red'}} onClick={() => onDeleteProduct(productId)}>Remove from Product DB</button>
       </div>
     </div>
   );

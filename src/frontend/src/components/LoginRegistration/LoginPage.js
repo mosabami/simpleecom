@@ -36,7 +36,7 @@ const LoginPage = ({ onLogin, loggedIn, wrongEmail }) => {
           </label>
           <div className="button-group">
             <button type="submit">Login</button>
-            <button type="button" onClick={handleRegister}>Register</button>
+            <button type="button" onClick={handleRegister}>Registration Page</button>
           </div>
         </form>
         <div>
