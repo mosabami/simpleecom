@@ -19,10 +19,14 @@ namespace Simpleecom.Products.API.Controllers
 
       
         [HttpGet]
-        public IActionResult GetProductByIdBrand(string id, string brand)
+        public async Task<IActionResult> GetProductByBrandNameAsync(string brandName)
         {
-            var product = _repository.GetByIdAsync(id, brand);
-            return Ok("Product");
+            var products = await _repository.GetItemsAsync(x => x.Brand.ToLower() == brandName.ToLower());
+            if (products.Count() < 1)
+            {
+                return NotFound();
+            }
+            return Ok(products);
         }
 
         [HttpGet]
