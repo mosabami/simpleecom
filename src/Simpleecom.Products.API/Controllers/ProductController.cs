@@ -61,11 +61,10 @@ namespace Simpleecom.Products.API.Controllers
             {
                 var existing = await _repository.GetItemsAsync(x => x.Id == product.Id);
                 if (existing.Count() > 0)
-                    return Conflict($"Product with id {product.Id} already exists");
-                if (existing.Count() == 0)
                 {
-                    var p = await _repository.AddAsync(new Product(product));
+                    return Conflict($"Product with id {product.Id} already exists");
                 }
+                 var p = await _repository.AddAsync(new Product(product));
             }
            
             return Ok();
