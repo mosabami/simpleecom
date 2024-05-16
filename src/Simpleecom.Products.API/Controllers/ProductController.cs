@@ -54,6 +54,23 @@ namespace Simpleecom.Products.API.Controllers
             return BadRequest();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateProductsAsync([FromBody] List<CreateProductDto> products)
+        {
+            foreach (var product in products)
+            {
+                var existing = await _repository.GetItemsAsync(x => x.Id == product.Id);
+                if (existing.Count() > 0)
+                    return Conflict($"Product with id {product.Id} already exists");
+                if (product != null)
+                {
+                    var p = await _repository.AddAsync(new Product(product));
+                }
+            }
+           
+            return Ok();
+        }
+
 
         [HttpPut]
         public async Task<IActionResult> UpdateProductAsync([FromBody] Product product)

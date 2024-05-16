@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Simpleecom.Shared.Models
 {
@@ -29,7 +30,8 @@ namespace Simpleecom.Shared.Models
 
         public int Inventory { get; set; }
 
-        public bool Active { get; set; }
+        [JsonIgnore]
+        public bool Active { get; set; } = true;
 
         [Required]
         public string Brand { get; set; }
