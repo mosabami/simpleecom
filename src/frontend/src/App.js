@@ -30,15 +30,13 @@ const App = () =>  {
   const navigate = useNavigate();
   const handleBrandLinkClick = (brandName) => {
     setBrand(brandName);
-    navigate(`/brand/${encodeURIComponent(brandName)}`);
+    navigate(`/brandName/${encodeURIComponent(brandName)}`);
     // navigate(`/brand`);
   };
 
 
   const handleLogin = async (email) => {
     let login_endpoint = `${base_url}/api/Auth/Login?email=${encodeURIComponent(email)}`;
-    console.log(`login_endpoint: ${login_endpoint}`);
-
     try {
       let response = await fetch(login_endpoint);
       if (!response.ok) {
@@ -50,10 +48,7 @@ const App = () =>  {
         throw new Error('userData is undefined');
       }
       setLoggedIn(true);
-      // setUserID(userData["id"]);
       setwrongEmail(false);
-      // setUserData(userData);
-      // console.log('userData:', userData);
       let productResponse = await fetch(`${base_url}/api/Product/GetProducts`)
         .then(response => response.json())
         .catch((error) => {
@@ -71,7 +66,6 @@ const App = () =>  {
         cartItems.userId = userData.id;
       }
       setCart(cartItems);
-      console.log('cart:', cart);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -83,8 +77,6 @@ const App = () =>  {
 
 const handleRegister = async (email) => {
   let url = `${base_url}/api/Auth/RegisterUser`;
-  console.log(url);
-
   try {
     let response = await fetch(url, {
       method: 'POST',
@@ -207,7 +199,7 @@ const handleDeleteProduct = async (productId) => {
 
 
 
-const purchase = () => {
+const handlePurchase = () => {
   if (!cart) {
     console.error('Cart is undefined');
     return;
@@ -249,7 +241,6 @@ const purchase = () => {
 useEffect(() => {
   let url = `${base_url}/api/Cart/UpdateCart`;
   if (!cart) {
-    console.log('Cart is undefined');
     return;
   }
   if (loggedIn) {
@@ -261,7 +252,7 @@ useEffect(() => {
       body: JSON.stringify(cart),
     })
       .then(response => response.json())
-      .then(data => console.log(data))
+      // .then(data => console.log(data))
       .catch((error) => {
         console.error('Error:', error);
       });
@@ -269,30 +260,28 @@ useEffect(() => {
 }, [cart, loggedIn]); // This will run whenever `cart` changes
 
 useEffect(() => {
-  let url = `${base_url}/api/Product/GetProductsByBrand?brand=${brand}`;
-  fetch(url)
-    .then(response => {
-      if (response.status !== 200) {
-        console.error('Network response was not ok. Pulling data from local state');
-        return products.filter(product => product.brand === brand);
-      }
-      else {
-        return response.json();
-      }
-    })
-    .then(data => {
-      setBrandData(data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}, [brand, products]); // This will run whenever `brand` or `products` changes
+  if (brand !== 'all') {
+    let url = `${base_url}/api/Product/GetProductByBrandName?brandName=${encodeURIComponent(brand)}`;
+    fetch(url)
+      .then(response => {
+        if (response.status !== 200) {
+          console.error('Network response was not ok. Pulling data from local state');
+          return products.filter(product => product.brand === brand);
+        }
+        else {
+          console.log('Network response was ok. Pulling data from the server');
+          return response.json();
+        }
+      })
+      .then(data => {
+        setBrandData(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
 
-// useEffect(() => {
-//   if (loggedIn) {
-//     navigate(`/brand/${brand}`);
-//   }
-// }, [brandData]);
+}, [brand, products]); // This will run whenever `brand` or `products` changes
 
   return (
       <div className="App">
@@ -305,7 +294,7 @@ useEffect(() => {
             <Route path="/" element={loggedIn ? <ProductList products={products} onAddToCart={handleUpdateCart} onBrandLinkClick={handleBrandLinkClick} onRemoveFromCart={handleRemoveFromCart} cart={cart} /> : <Navigate to="/login" />} />
             <Route path="/product/:id" element={loggedIn ? <ProductDetails products={products} onAddToCart={handleUpdateCart} onBrandLinkClick={handleBrandLinkClick} onRemoveFromCart={handleRemoveFromCart} onDeleteProduct={handleDeleteProduct} cart={cart} /> : <Navigate to="/login" />} />
             <Route path="/brand/*" element={loggedIn ?  <ProductList products={brandData} onAddToCart={handleUpdateCart} handleBrandLinkClick={handleBrandLinkClick} /> : <Navigate to="/login" />} />
-            <Route path="/cart" element={loggedIn ? <Cart cart={cart} onPurchase={purchase} onRemoveFromCart={handleRemoveFromCart} /> : <Navigate to="/login" />} />
+            <Route path="/cart" element={loggedIn ? <Cart cart={cart} onPurchase={handlePurchase} onRemoveFromCart={handleRemoveFromCart} /> : <Navigate to="/login" />} />
           </Routes>
         </div>
       </div>

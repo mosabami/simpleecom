@@ -27,7 +27,7 @@ class GenerateProductsData():
         for item in self.catalog_data:
             new_item = {}
             prodId = str(item.get('Id'))
-            print(f'Creating product with ID {type(prodId)}')
+            print(f'Creating product with ID {prodId}')
             new_item['id'] = prodId
             new_item['name'] = item.get('Name')
             new_item['description'] = item.get('Description')

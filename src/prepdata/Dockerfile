@@ -5,11 +5,7 @@ FROM python:3.12-slim
 WORKDIR /code
 #Copy the dependencies file to the working directory
 COPY requirements.txt .
-RUN apt-get update ##[edited]
-RUN apt-get install ffmpeg libsm6 libxext6  -y
 
-RUN apt-get update 
-# && apt-get install -y python3-opencv
 #Install the dependencies
 RUN pip install -r requirements.txt
 
