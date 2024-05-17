@@ -69,7 +69,9 @@ namespace Simpleecom.Shared.Processors
                 .WithLeaseContainer(leaseContainer)
                 .Build();
 
+            _logger.LogInformation("Starting change feed");
             await changeFeedProcessor.StartAsync();
+            _logger.LogInformation("change feed started");
         }
 
         private async Task HandleChangesAsync(
