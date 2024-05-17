@@ -43,6 +43,7 @@ namespace Simpleecom.Shared.Processors
 
         public async Task InitializeAsync()
         {
+            try { 
             string databaseName = _options.DATABASE_ID;
             string containerName = _options.CONTAINER_NAME;
 
@@ -72,6 +73,11 @@ namespace Simpleecom.Shared.Processors
             _logger.LogInformation("Starting change feed");
             await changeFeedProcessor.StartAsync();
             _logger.LogInformation("change feed started");
+                }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error initializing change feed processor - " + ex.Message);
+            }
         }
 
         private async Task HandleChangesAsync(
