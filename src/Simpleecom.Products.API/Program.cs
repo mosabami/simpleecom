@@ -8,6 +8,11 @@ namespace Simpleecom.Products.API
     {
         public static async Task Main(string[] args)
         {
+
+            var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole().AddDebug());
+            var logger = loggerFactory.CreateLogger<Program>();
+            logger.LogInformation("Products API Initializing");
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -17,6 +22,7 @@ namespace Simpleecom.Products.API
             
             builder.Services.AddEndpointsApiExplorer();
 
+            logger.LogInformation("Adding Enviornment Variables");
             var ev = System.Environment.GetEnvironmentVariables();
 
             builder.Configuration.AddEnvironmentVariables();
@@ -24,6 +30,7 @@ namespace Simpleecom.Products.API
 
             builder.Services.AddSingleton<IProductChangeFeedProcessor, ProductChangeFeedProcessor>();
 
+            logger.LogInformation("Adding Cosmos DB Repository");
             builder.Services.AddScoped(typeof(CosmosDBRepository<>));
 
             builder.Services.AddSwaggerGen();
@@ -37,6 +44,8 @@ namespace Simpleecom.Products.API
             });
 
             var app = builder.Build();
+
+            logger.LogInformation("Adding Change Feed Processor");
 
             await app.Services.GetRequiredService<IProductChangeFeedProcessor>().InitializeAsync();
 

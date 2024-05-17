@@ -47,6 +47,9 @@ namespace Simpleecom.Shared.Models
         [Required]
         public string UserId { get; set; }
 
+        [JsonIgnore]
+        public bool Complete { get; set; }
+
         private string _orderId;
         public string OrderId
         {

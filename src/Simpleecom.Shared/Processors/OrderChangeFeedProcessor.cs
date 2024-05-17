@@ -64,6 +64,18 @@ namespace Simpleecom.Shared.Processors
         {
             foreach (var order in changes)
             {
+                if (!order.Complete)
+                {
+                    foreach (var product in order.Products)
+                    {
+                        var existing = await _repository.GetItemAsync(p => p.Id == product.ProductId);
+                        if (existing != null)
+                        {
+                            existing.Inventory -= product.ProductQuantity;
+                            await _repository.UpsertAsync(existing);
+                        }
+                    }
+                }
                 Console.WriteLine($"Changed item: {order}");
             }
         }
