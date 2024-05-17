@@ -2,6 +2,7 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Simpleecom.Shared.Models;
 using Simpleecom.Shared.Options;
@@ -20,6 +21,7 @@ namespace Simpleecom.Shared.Processors
         private readonly CosmosDbOptions _options;
         private static Random random = new Random();
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly ILogger<ProductChangeFeedProcessor> _logger;
 
 
         private readonly CosmosDBRepository<SimpleecomUser> _userRepository;
@@ -35,6 +37,7 @@ namespace Simpleecom.Shared.Processors
             _scopeFactory = scopeFactory;
             _userRepository = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<CosmosDBRepository<SimpleecomUser>>();
             _productRepository = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<CosmosDBRepository<Product>>();
+            _logger = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<ILogger<ProductChangeFeedProcessor>>();
 
         }
 
@@ -46,15 +49,19 @@ namespace Simpleecom.Shared.Processors
             _cosmosClient = GetCosmosClient();
 
             string leaseContainerName = $"Lease" + _options.CONTAINER_NAME;
+            _logger.LogInformation("Creating database");
             Database database = await _cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName);
+            _logger.LogInformation("Creating container");
             Container container = await database.CreateContainerIfNotExistsAsync(
                 containerName,
                 _options.PARTITION_KEY
             );
+            _logger.LogInformation("Creating lease container");
             Container leaseContainer = await database.CreateContainerIfNotExistsAsync(
                 leaseContainerName,
                 "/id"
             );
+            _logger.LogInformation("Done creating containers");
 
             ChangeFeedProcessor changeFeedProcessor = container
                 .GetChangeFeedProcessorBuilder<Product>("changeFeedProcessor", HandleChangesAsync)
