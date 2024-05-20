@@ -11,7 +11,10 @@ This application was developed for the LevelUp workshow that can be found in the
 ## Prerequisites
 
 1. Azure subscription
-2. Docker installation
+1. Docker installation
+1. Basic knowledge of containers
+1. Basic knowledge of Microservices
+1. Basic knowledge of frontend and backend development
 
 ## Getting Started
 
@@ -44,6 +47,15 @@ This will create the requried containers including an nginx loadbalancer that ro
    - Delete the product from your catalog if you dont like it :)
    - Click on the `Cart` link on the nav bar to see your cart
    - Click on `Place order` to send the request to the orders service and create an order
+
+## API Doc
+
+To access the back end services' API docs with swagger, hit the following endpoints on your browser with the containers running via docker-compose. You will see the various endpoints you can hit to get data from the database and examples to get said data.
+
+- Orders: http://localhost:8082/swagger/index.html
+- Auth: http://localhost:8083/swagger/index.html
+- Products: http://localhost:8084/swagger/index.html
+- Carts: http://localhost:8085/swagger/index.html
 
 ## Deploying your app on Azure Kubernetes Service
 
