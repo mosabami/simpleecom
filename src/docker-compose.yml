@@ -40,13 +40,13 @@ services:
     ports:
       - '8084:80'
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=80
+      - ASPNETCORE_ENVIRONMENT=Development
       - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
       - COSMOSDBOPTIONS__PARTITION_KEY=/brand
       - COSMOSDBOPTIONS__CONTAINER_NAME=Products
       - COSMOSDBOPTIONS__COSMOS_ENDPOINT=
-      - COSMOSDBOPTIONS__CONNECTION_STRING=
+      # - COSMOSDBOPTIONS__CONNECTION_STRING=
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
@@ -59,11 +59,13 @@ services:
     ports:
       - '8085:80'
     environment:
+      - ASPNETCORE_HTTP_PORTS=80
+      - ASPNETCORE_ENVIRONMENT=Development
       - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
       - COSMOSDBOPTIONS__PARTITION_KEY=/userId
       - COSMOSDBOPTIONS__CONTAINER_NAME=Carts
       - COSMOSDBOPTIONS__COSMOS_ENDPOINT=
-      - COSMOSDBOPTIONS__CONNECTION_STRING=
+      # - COSMOSDBOPTIONS__CONNECTION_STRING=
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
@@ -76,11 +78,13 @@ services:
     ports:
       - '8082:80'
     environment:
+      - ASPNETCORE_HTTP_PORTS=80
+      - ASPNETCORE_ENVIRONMENT=Development
       - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
       - COSMOSDBOPTIONS__PARTITION_KEY=/userId
       - COSMOSDBOPTIONS__CONTAINER_NAME=Orders
       - COSMOSDBOPTIONS__COSMOS_ENDPOINT=
-      - COSMOSDBOPTIONS__CONNECTION_STRING=
+      # - COSMOSDBOPTIONS__CONNECTION_STRING=
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
@@ -93,11 +97,13 @@ services:
     ports:
       - '8083:80'
     environment:
+      - ASPNETCORE_HTTP_PORTS=80
+      - ASPNETCORE_ENVIRONMENT=Development
       - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
       - COSMOSDBOPTIONS__PARTITION_KEY=/email
       - COSMOSDBOPTIONS__CONTAINER_NAME=Users
       - COSMOSDBOPTIONS__COSMOS_ENDPOINT=
-      - COSMOSDBOPTIONS__CONNECTION_STRING=
+      # - COSMOSDBOPTIONS__CONNECTION_STRING=
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
