@@ -400,3 +400,6 @@ FodyWeavers.xsd
 # product data
 productsData.json
 .env
+
+# docker
+**/docker-compose.override.yml
