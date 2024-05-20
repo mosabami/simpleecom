@@ -39,6 +39,7 @@ This will create the requried containers including an nginx loadbalancer that ro
    - Open console on your browser to see messages (optional)
    - Add products to your cart
    - Remove products from your cart
+   - Click on a product's brand name to navigate to list of products from that brand
    - Click on product name to see the product's detail
    - Delete the product from your catalog if you dont like it :)
    - Click on the `Cart` link on the nav bar to see your cart

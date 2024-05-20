@@ -1,0 +1,8 @@
+/* Cart.css */
+.orders-table {
+    margin-bottom: 20px; /* Add some space at the bottom of the table */
+}
+
+.clear-cart-button {
+    padding: 10px 20px; /* Add some padding to the button */
+}
