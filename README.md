@@ -11,7 +11,7 @@ This application was developed for the LevelUp workshow that can be found in the
 ## Application Architecture
 
 Below is a diagram of the application's architecture when testing it locally.
-![Application architecture when testing locally](./media/architecture-local.png)
+![Application architecture when testing locally](./media/local-architecture.png).
 
 ### Auth Service
 
