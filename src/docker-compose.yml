@@ -31,6 +31,7 @@ services:
     environment:
       - REACT_APP_HOMEPAGE_PIC=https://simpleecom.blob.core.windows.net/awesomeeshop/eshop_homepage.png
       - REACT_APP_API_BASE_URL=none
+      - REACT_APP_SERVER_NAME=Test
     build:
       context: ./frontend
       dockerfile: Dockerfile

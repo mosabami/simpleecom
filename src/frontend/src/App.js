@@ -10,6 +10,7 @@ import LoginPage from './components/LoginRegistration/LoginPage';
 import RegisterPage from './components/LoginRegistration/RegisterPage';
 import placeholderCart from './placeholderCart.json';
 let base_url = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8083';
+let server_name = process.env.REACT_APP_SERVER_NAME || '';
 // If base_url is 'none', set it to an empty string. workaround to make it work with passing env variables from docker-compose
 base_url = base_url === 'none' ? '' : base_url; 
 console.log(`base_url: ${base_url}`);
@@ -218,7 +219,7 @@ const handlePurchase = () => {
       body: JSON.stringify(newCart),
     })
       .then(response => {
-        if (response.ok) {
+        if (response.status === 200) {
           return "Order placed successfully!";
         }
         else {
@@ -285,7 +286,7 @@ useEffect(() => {
 
   return (
       <div className="App">
-        <Navbar onLogout={handleLogout} loggedIn={loggedIn} />
+        <Navbar onLogout={handleLogout} loggedIn={loggedIn} server={server_name} />
         <div className="page-container">
           <Routes>
             <Route path="/login" element={<LoginPage onLogin={handleLogin}
