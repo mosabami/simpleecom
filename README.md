@@ -2,11 +2,36 @@
 
 A simple ecommerce application for a levelup training.
 
-![Loginpage](screenshot.png)
+![Loginpage](./media/screenshot.png)
 
-![Loggedinpage](screenshot-home.png)
+![Loggedinpage](./media/screenshot-home.png)
 
 This application was developed for the LevelUp workshow that can be found in the [AKS Landing Zone Accelerator's](https://github.com/Azure/AKS-Landing-Zone-Accelerator) [AKS & NoSQL CosmosDB Multiregion](https://github.com/Azure/AKS-Landing-Zone-Accelerator/tree/main/Scenarios/CosmosDB-nosql-Resiliency) scenario.
+
+## Application Architecture
+
+Below is a diagram of the application's architecture when testing it locally.
+![Application architecture when testing locally](./media/architecture-local.png)
+
+### Auth Service
+
+This service is responsible for authenticating user and managing the Users collection, which also includes the cart in the database.
+
+### Carts Service
+
+This service is responsible for adding and removing products from the cart and managing the cart within the Users collection
+
+### Products Service
+
+This service is responsible for managing product catalog and inventory.
+
+### Frontend Service
+
+This is responsible for rendering the front end of the application on a web browser.
+
+### Nginx
+
+This is an nginx container that acts as a router and loadbalancer. It is able to perform path based routing. For more information about its configuration, check out its config file
 
 ## Prerequisites
 
