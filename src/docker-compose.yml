@@ -40,11 +40,16 @@ services:
     ports:
       - '8084:80'
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=80
       - COSMOSDBOPTIONS__DATABASE_ID=Simpleecom
       - COSMOSDBOPTIONS__PARTITION_KEY=/brand
       - COSMOSDBOPTIONS__CONTAINER_NAME=Products
       - COSMOSDBOPTIONS__COSMOS_ENDPOINT=
       - COSMOSDBOPTIONS__CONNECTION_STRING=
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     build:
       context: .
       dockerfile: Simpleecom.Products.API/Dockerfile
@@ -59,6 +64,9 @@ services:
       - COSMOSDBOPTIONS__CONTAINER_NAME=Carts
       - COSMOSDBOPTIONS__COSMOS_ENDPOINT=
       - COSMOSDBOPTIONS__CONNECTION_STRING=
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     build:
       context: .
       dockerfile: Simpleecom.Cart.API/Dockerfile
@@ -73,6 +81,9 @@ services:
       - COSMOSDBOPTIONS__CONTAINER_NAME=Orders
       - COSMOSDBOPTIONS__COSMOS_ENDPOINT=
       - COSMOSDBOPTIONS__CONNECTION_STRING=
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     build:
       context: .
       dockerfile: Simpleecom.Orders.API/Simpleecom.Orders.API/Dockerfile
@@ -87,6 +98,9 @@ services:
       - COSMOSDBOPTIONS__CONTAINER_NAME=Users
       - COSMOSDBOPTIONS__COSMOS_ENDPOINT=
       - COSMOSDBOPTIONS__CONNECTION_STRING=
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     build:
       context: .
       dockerfile: Simpleecom.Auth/Dockerfile
