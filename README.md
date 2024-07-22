@@ -6,7 +6,7 @@ A simple ecommerce application for a levelup training.
 
 ![Loggedinpage](./media/screenshot-home.png)
 
-This application was developed for the LevelUp workshow that can be found in the [AKS Landing Zone Accelerator's](https://github.com/Azure/AKS-Landing-Zone-Accelerator) [AKS & NoSQL CosmosDB Multiregion](https://github.com/Azure/AKS-Landing-Zone-Accelerator/tree/main/Scenarios/CosmosDB-nosql-Resiliency) scenario.
+This application was developed for the LevelUp workshow that can be found in the [AKS Landing Zone Accelerator](https://github.com/Azure/AKS-Landing-Zone-Accelerator)'s [AKS & NoSQL CosmosDB Multiregion](https://github.com/Azure/AKS-Landing-Zone-Accelerator/tree/main/Scenarios/CosmosDB-nosql-Resiliency) scenario.
 
 ## Application Architecture
 
